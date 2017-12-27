@@ -25,6 +25,10 @@ public class CourseEntity implements Serializable {
 	private String name;
 	@Column(name = "COURSE_DESC")
 	private String description;
+	@Column(name = "MAX_SUBSCRIPTIONS")
+	private int maxSubscriptions;
+	@Column(name = "AVAILABLE_SUBSCRIPTIONS")
+	private int stillAvailableSubscriptions;
 
 	public CourseEntity() {
 	}
@@ -59,6 +63,22 @@ public class CourseEntity implements Serializable {
 		this.description = description;
 	}
 
+	public int getMaxSubscriptions() {
+		return maxSubscriptions;
+	}
+
+	public void setMaxSubscriptions(int maxSubscriptions) {
+		this.maxSubscriptions = maxSubscriptions;
+	}
+
+	public int getStillAvailableSubscriptions() {
+		return stillAvailableSubscriptions;
+	}
+
+	public void setStillAvailableSubscriptions(int stillAvailableSubscriptions) {
+		this.stillAvailableSubscriptions = stillAvailableSubscriptions;
+	}
+
 	public boolean equals(final Object other) {
 		if (!(other instanceof CourseEntity))
 			return false;
@@ -68,6 +88,8 @@ public class CourseEntity implements Serializable {
 				.append(id, o.id)
 				.append(name, o.name)
 				.append(description, o.description)
+				.append(maxSubscriptions, o.maxSubscriptions)
+				.append(stillAvailableSubscriptions, o.stillAvailableSubscriptions)
 				.isEquals();
 	}
 
@@ -76,6 +98,8 @@ public class CourseEntity implements Serializable {
 				.append(id)
 				.append(name)
 				.append(description)
+				.append(maxSubscriptions)
+				.append(stillAvailableSubscriptions)
 				.toHashCode();
 	}
 
@@ -84,6 +108,8 @@ public class CourseEntity implements Serializable {
 				.append("id", id)
 				.append("name", name)
 				.append("description", description)
+				.append("maxSubscriptions", maxSubscriptions)
+				.append("stillAvailableSubscriptions", stillAvailableSubscriptions)
 				.toString();
 	}
 
