@@ -14,14 +14,14 @@ GET  http://127.0.0.1:8080/topics/1
 GET  http://127.0.0.1:8080/topics/deleteall
 ```
 ```
-Json Course
+Course Json
 {
 	"id": "1",
 	"name": "Java",
 	"description": "Java course"
 }
 
-Json  Topic
+Topic Json
 http://127.0.0.1:8080/courses/1/topic
 {
 	"id": "1",
