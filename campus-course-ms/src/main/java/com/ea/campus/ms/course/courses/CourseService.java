@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ea.campus.ms.course.exception.CourseNotFoundException;
 import com.ea.campus.ms.course.topics.TopicEntity;
 import com.ea.campus.ms.course.topics.TopicRepository;
 
@@ -49,13 +50,12 @@ public class CourseService {
 
 	public void addTopicForCourse(TopicEntity topic, String courseId) {
 		CourseEntity course = courseRepository.findOne(courseId);
-		log.debug("course found in DB       : " + course);
-		log.debug("topic to be inserted     : " + topic);
+		if(course == null){
+			throw new CourseNotFoundException("Course '"+courseId+"' not present in DB");
+		}
 		topic.setCourse(course);
-		log.debug("topic updated with course: " + topic);
+		log.debug("Topic to add, assocciated with course: " + topic);
 		topicRepository.save(topic);
-		// course.addTopic(topic);
-		// courseRepository.save(course);
 	}
 
 	public List<TopicEntity> getAllTopicsForCourse(String courseId) {

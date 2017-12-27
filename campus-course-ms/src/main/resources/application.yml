@@ -26,6 +26,6 @@ logging.level:
             boot: warn
             web: warn
         hibernate: warn
-        hibernate.SQL: debug
+        hibernate.SQL: warn
         apache: warn
         jboss.logging: warn

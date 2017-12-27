@@ -60,14 +60,18 @@ public class CourseEntity {
 			return false;
 		CourseEntity o = (CourseEntity) other;
 
-		return new EqualsBuilder().append(id, o.id).append(name, o.name).append(description, o.description)
-				// .append(topics, o.topics)
+		return new EqualsBuilder()
+				.append(id, o.id)
+				.append(name, o.name)
+				.append(description, o.description)
 				.isEquals();
 	}
 
 	public int hashCode() {
-		return new HashCodeBuilder().append(id).append(name).append(description)
-				// .append(topics)
+		return new HashCodeBuilder()
+				.append(id)
+				.append(name)
+				.append(description)
 				.toHashCode();
 	}
 

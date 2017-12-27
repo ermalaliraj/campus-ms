@@ -48,8 +48,19 @@ public class CourseController {
 		courseService.deleteCourse(id);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/topic")
+	@RequestMapping(method = RequestMethod.GET, value = "/courses/deleteall")
+	public void deleteAllCourses() {
+		courseService.deleteAll();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/courses/{courseId}/topics")
+	public List<TopicEntity> getAllTopicsForCourse(@PathVariable String courseId) {
+		return courseService.getAllTopicsForCourse(courseId);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/topics")
 	public void addTopicForCourse(@RequestBody TopicEntity topic, @PathVariable String courseId) {
 		courseService.addTopicForCourse(topic, courseId);
 	}
+	
 }

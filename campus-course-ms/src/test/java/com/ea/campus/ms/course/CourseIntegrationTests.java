@@ -2,8 +2,10 @@ package com.ea.campus.ms.course;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -36,11 +38,25 @@ public class CourseIntegrationTests {
 	@Autowired
 	private TestRestTemplate testRestTemplate;
 
+	@After
+	public void afterEachTest() {
+		testRestTemplate.getForEntity(host + port + "/topics/deleteall", Void.class);
+		testRestTemplate.getForEntity(host + port + "/courses/deleteall", Void.class);
+	}
+
+	@Test
+	public void testPing() throws Exception {
+		ResponseEntity<String> resp = testRestTemplate.getForEntity(host + port + "/ping", String.class);
+		log.debug("Date from MS: " + resp.getBody());
+		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+		then(resp.getBody()).isNotNull();
+	}
+
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void cl_emptyTopicsList() throws Exception {
+	public void testEmptyTopicsList() throws Exception {
 		ResponseEntity<List> resp = testRestTemplate.getForEntity(host + port + "/topics", List.class);
-		log.debug("[MS Response]: " + resp.getBody());
+		log.debug("resp: " + resp.getBody());
 
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNotNull();
@@ -51,7 +67,7 @@ public class CourseIntegrationTests {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-	public void hp_topic_CRUD() throws Exception {
+	public void test_topic_CRUD() throws Exception {
 		String id = "1";
 
 		// 1. Insert
@@ -98,7 +114,7 @@ public class CourseIntegrationTests {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
-	public void hp_course_CRUD() throws Exception {
+	public void test_course_CRUD() throws Exception {
 		String id = "1";
 
 		// 1. Insert
@@ -143,36 +159,69 @@ public class CourseIntegrationTests {
 		then(resp.getBody()).isNull();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
-	public void hp_topicCourse_CRUD() throws Exception {
-		// 1. Insert
+	public void test_CourseAndTopic() throws Exception {
+		// 1. Insert Course
 		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
 		ResponseEntity<Void> postResp = testRestTemplate.postForEntity(host + port + "/courses", course, Void.class);
-		log.debug("postResp: " + postResp);
 		then(postResp.getStatusCode()).isEqualTo(HttpStatus.OK);
 
+		// 2. Insert Topic, addTopicForCourse()
 		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
-		ResponseEntity<Void> postRespTopic = testRestTemplate.postForEntity(host + port + "/courses/" + course.getId() + "/topic", topic, Void.class);
-		log.debug("postRespTopic: " + postRespTopic);
+		ResponseEntity<Void> postRespTopic = testRestTemplate.postForEntity(host + port + "/courses/" + course.getId() + "/topics", topic, Void.class);
 		then(postRespTopic.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-		// 2. Get
-		ResponseEntity<CourseEntity> resp = testRestTemplate.getForEntity(host + port + "/courses/" + course.getId(), CourseEntity.class);
-		log.debug("getResp: " + resp.getBody());
-		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
-		then(resp.getBody()).isNotNull();
-		then((CourseEntity) resp.getBody()).isEqualTo(course);
-//		then(((CourseEntity) resp.getBody()).getTopics()).isNotNull();
-//		then(((CourseEntity) resp.getBody()).getTopics().size()).isEqualTo(1);
-//		then(((CourseEntity) resp.getBody()).getTopics().get(0)).isEqualTo(topic);
-
-		// 2. Get
+		// checks if topic is associated with Course
 		ResponseEntity<TopicEntity> topicDB = testRestTemplate.getForEntity(host + port + "/topics/" + topic.getId(), TopicEntity.class);
 		log.debug("getResp: " + topicDB.getBody());
+		log.debug("topic  : " + topic);
 		then(topicDB.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(topicDB.getBody()).isNotNull();
-		topic.setCourse(course);
-		then(((TopicEntity) topicDB.getBody())).isEqualTo(topic);
+		then(((TopicEntity) topicDB.getBody()).getCourse()).isEqualTo(course);
 
+		// getAllTopicsForCourse
+		ResponseEntity<List> topicListResp = testRestTemplate.getForEntity(host + port + "/courses/" + course.getId() + "/topics", List.class);
+		log.debug("topicListResp: " + topicListResp.getBody());
+		then(topicListResp.getStatusCode()).isEqualTo(HttpStatus.OK);
+		then(topicListResp.getBody()).isNotNull();
+		List<TopicEntity> list = (List<TopicEntity>) topicListResp.getBody();
+		then(list).isNotNull();
+		then(list.size()).isEqualTo(1);
+		// then((TopicEntity)list.get(0)).isEqualTo(topicDB.getBody()); List<TopicEntity> not taking effect. .get(0) is of type LinkedHashMap
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void test_CourseAndNTopics() throws Exception {
+		// 1. Insert Course
+		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		ResponseEntity<Void> postResp = testRestTemplate.postForEntity(host + port + "/courses", course, Void.class);
+		then(postResp.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		// 2. Insert 3 Topics, addTopicForCourse()
+		List<TopicEntity> topicsList = new ArrayList<>();
+		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
+		ResponseEntity<Void> postRespTopic = testRestTemplate.postForEntity(host + port + "/courses/" + course.getId() + "/topics", topic, Void.class);
+		then(postRespTopic.getStatusCode()).isEqualTo(HttpStatus.OK);
+		topicsList.add(topic.clone());
+		topic = new TopicEntity("2", "Strings", "Strings in Java");
+		postRespTopic = testRestTemplate.postForEntity(host + port + "/courses/" + course.getId() + "/topics", topic, Void.class);
+		then(postRespTopic.getStatusCode()).isEqualTo(HttpStatus.OK);
+		topicsList.add(topic.clone());
+		topic = new TopicEntity("3", "Multithreading", "Multithreading in Java");
+		postRespTopic = testRestTemplate.postForEntity(host + port + "/courses/" + course.getId() + "/topics", topic, Void.class);
+		then(postRespTopic.getStatusCode()).isEqualTo(HttpStatus.OK);
+		topicsList.add(topic.clone());
+
+		// getAllTopicsForCourse
+		ResponseEntity<List> topicListResp = testRestTemplate.getForEntity(host + port + "/courses/" + course.getId() + "/topics", List.class);
+		log.debug("topicListResp: " + topicListResp.getBody());
+		then(topicListResp.getStatusCode()).isEqualTo(HttpStatus.OK);
+		then(topicListResp.getBody()).isNotNull();
+		List<TopicEntity> list = (List<TopicEntity>) topicListResp.getBody();
+		then(list).isNotNull();
+		then(list.size()).isEqualTo(topicsList.size());
+	}
+
 }

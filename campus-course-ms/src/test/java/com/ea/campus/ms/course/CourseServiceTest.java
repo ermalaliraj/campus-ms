@@ -1,5 +1,6 @@
 package com.ea.campus.ms.course;
 
+import static com.ea.campus.ms.course.TestUtil.checkListEquality;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
@@ -114,17 +115,14 @@ public class CourseServiceTest {
 		topic.setCourse(course);
 		topicService.addTopic(topic);
 
-		// checks
+		// checks if topic is associated with Course
 		TopicEntity topicDB = topicService.getTopic(topic.getId());
 		log.debug("topicDB: " + topicDB);
 		then(topicDB).isNotNull();
+		then(topicDB.getCourse()).isEqualTo(course);
 		then(topicDB).isEqualTo(topic);
 
-		CourseEntity courseDB = courseService.getCourse(course.getId());
-		log.debug("courseDB: " + courseDB);
-		then(courseDB).isNotNull();
-		then(courseDB).isEqualTo(course);
-
+		// checks if topics list of the Course contains the inserted topic
 		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
 		checkListEquality(list, Arrays.asList(topic));
 	}
@@ -150,71 +148,48 @@ public class CourseServiceTest {
 		topicService.addTopic(topic);
 		topicsList.add(topic.clone());
 
-		// Checks
-		CourseEntity courseDB = courseService.getCourse(course.getId());
-		log.debug("courseDB: " + courseDB);
-		then(courseDB).isNotNull();
-		then(courseDB).isEqualTo(course);
-		// checkListEquality(courseDB.getTopics(), topicsList);
-
+		// Checks if topics list of the Course contains the inserted topics
+		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
+		checkListEquality(list, topicsList);
+		
+		// Checks if all topics present in DB are the one we inserted. (each junit , db starts empty)
 		List<TopicEntity> topicsDB = topicService.getAllTopics();
-		log.debug("courseDB: " + courseDB);
-		then(topicsDB).isNotNull();
-		checkListEquality(topicsDB, topicsList);
-	}
-
-	@Test
-	public void insertChild_Course_thenNParents() {
-		// 1. insert Course (db child)
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
-		courseService.addCourse(course);
-
-		// 2. Insert 3 Topics for the course "1" (db parent)
-		List<TopicEntity> topicsList = new ArrayList<>();
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
-		// course.addTopic(topic);
-		topicService.addTopic(topic);
-		courseService.addCourse(course);
-		topicsList.add(topic.clone());
-		topic = new TopicEntity("2", "Strings", "Strings in Java");
-		// course.addTopic(topic);
-		topicService.addTopic(topic);
-		courseService.addCourse(course);
-		topicsList.add(topic.clone());
-		topic = new TopicEntity("3", "Multithreading", "Multithreading in Java");
-		// course.addTopic(topic);
-		topicService.addTopic(topic);
-		courseService.addCourse(course);
-		topicsList.add(topic.clone());
-
-		// Checks
-		CourseEntity courseDB = courseService.getCourse(course.getId());
-		log.debug("courseDB: " + courseDB);
-		then(courseDB).isNotNull();
-		then(courseDB).isEqualTo(course);
-		// checkListEquality(courseDB.getTopics(), topicsList);
-
-		List<TopicEntity> topicsDB = topicService.getAllTopics();
-		log.debug("courseDB: " + courseDB);
+		log.debug("topicsDB: " + topicsDB);
 		then(topicsDB).isNotNull();
 		checkListEquality(topicsDB, topicsList);
 	}
 
 	@Test
 	public void addTopicForCourse() {
-		// 1. insert Course (db child)
+		// 1. Insert Course
 		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
-		courseService.addTopicForCourse(topic, course.getId());
+		// 2. Insert Topic
+		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		courseService.addTopicForCourse(topic1, course.getId());
 
-		// Checks
-		CourseEntity courseDB = courseService.getCourse(course.getId());
-		log.debug("courseDB: " + courseDB);
-		then(courseDB).isNotNull();
-		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
-		checkListEquality(list, Arrays.asList(topic));
+		// 3. Checks, New topic is associated to same Course
+		TopicEntity topicDB = topicService.getTopic(topic1.getId());
+		log.debug("topicDB: " + topicDB);
+		then(topicDB).isNotNull();
+		then(topicDB.getCourse()).isEqualTo(course);
+		
+		// 4. List for course 1 should be 1
+		List<TopicEntity> topicList = courseService.getAllTopicsForCourse(course.getId());
+		log.debug("topicList: " + topicList);
+		then(topicList).isNotNull();
+		then(topicList.size()).isEqualTo(1);
+		then(topicList).isEqualTo(Arrays.asList(topic1));
+		
+		TopicEntity topic2 = new TopicEntity("2", "Primitives", "Primitives in Java");
+		courseService.addTopicForCourse(topic2, course.getId());
+		
+		topicList = courseService.getAllTopicsForCourse(course.getId());
+		log.debug("topicList: " + topicList);
+		then(topicList).isNotNull();
+		then(topicList.size()).isEqualTo(2);
+		then(topicList).isEqualTo(Arrays.asList(topic1, topic2));
 	}
 
 	@Test
@@ -232,25 +207,10 @@ public class CourseServiceTest {
 		topicService.updateTopic(topic);
 
 		// checks
-		CourseEntity courseDB = courseService.getCourse(course.getId());
-		then(courseDB).isNotNull();
-		then(courseDB).isEqualTo(course);
-		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
-		checkListEquality(list, Arrays.asList(topic));
-
 		TopicEntity topicDB = topicService.getTopic(topic.getId());
 		then(topicDB).isNotNull();
+		then(topicDB.getCourse()).isEqualTo(course);
 		then(topicDB).isEqualTo(topic);
-	}
-
-	private <T> void checkListEquality(List<T> list1, List<T> list2) {
-		then(list1).isNotNull();
-		then(list2).isNotNull();
-		then(list1.size()).isEqualTo(list2.size());
-
-		for (int i = 0; i < list1.size(); i++) {
-			then(list1.get(i)).isEqualTo(list2.get(i));
-		}
 	}
 
 }
