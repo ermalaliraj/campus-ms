@@ -14,15 +14,14 @@ GET  http://127.0.0.1:8080/topics/1
 GET  http://127.0.0.1:8080/topics/deleteall
 ```
 ```
-Course
+Json Course
 {
 	"id": "1",
 	"name": "Java",
 	"description": "Java course"
 }
 
-
-Topic
+Json  Topic
 http://127.0.0.1:8080/courses/1/topic
 {
 	"id": "1",
@@ -30,6 +29,7 @@ http://127.0.0.1:8080/courses/1/topic
 	"description": "Array desc"
 }
 
+Post Header
 [{"key":"Content-Type","value":"application/json","description":""}]
 
 ```
