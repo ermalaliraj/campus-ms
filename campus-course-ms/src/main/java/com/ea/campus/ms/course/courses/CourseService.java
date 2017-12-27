@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ea.campus.ms.course.exception.CourseNotFoundException;
+import com.ea.campus.ms.course.exception.TopicAssociatedToCourseException;
 import com.ea.campus.ms.course.topics.TopicEntity;
 import com.ea.campus.ms.course.topics.TopicRepository;
 
 @Service
 public class CourseService {
 
+	@SuppressWarnings("unused")
 	private static final transient Logger log = LoggerFactory.getLogger(CourseService.class);
 
 	@Autowired
@@ -29,7 +31,8 @@ public class CourseService {
 	}
 
 	public CourseEntity getCourse(String id) {
-		return courseRepository.findOne(id);
+		CourseEntity entity = courseRepository.findOne(id);
+		return entity;
 	}
 
 	public void addCourse(CourseEntity course) {
@@ -41,27 +44,33 @@ public class CourseService {
 	}
 
 	public void deleteCourse(String id) {
-		courseRepository.delete(id);
+		try {
+			courseRepository.delete(id);
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			throw new TopicAssociatedToCourseException("Course " + id + " contains a Topic so, cannot be deleted.");
+		}
 	}
 
 	public void deleteAll() {
-		courseRepository.deleteAll();
+		try {
+			courseRepository.deleteAll();
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			throw new TopicAssociatedToCourseException("One of the Courses contains a Topic. Cannot delete ALL courses.");
+		}
 	}
 
 	public void addTopicForCourse(TopicEntity topic, String courseId) {
 		CourseEntity course = courseRepository.findOne(courseId);
-		if(course == null){
-			throw new CourseNotFoundException("Course '"+courseId+"' not present in DB");
+		if (course == null) {
+			throw new CourseNotFoundException("Course '" + courseId + "' not present in DB");
 		}
 		topic.setCourse(course);
-		log.debug("Topic to add, assocciated with course: " + topic);
 		topicRepository.save(topic);
 	}
 
 	public List<TopicEntity> getAllTopicsForCourse(String courseId) {
 		List<TopicEntity> topics = new ArrayList<>();
-		topicRepository.findByCourseId(courseId)
-			.forEach(topics::add);
+		topicRepository.findByCourseId(courseId).forEach(topics::add);
 		return topics;
 	}
 

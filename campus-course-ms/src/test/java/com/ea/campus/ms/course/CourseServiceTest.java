@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ea.campus.ms.course.courses.CourseEntity;
 import com.ea.campus.ms.course.courses.CourseService;
+import com.ea.campus.ms.course.exception.TopicAssociatedToCourseException;
 import com.ea.campus.ms.course.topics.TopicEntity;
 import com.ea.campus.ms.course.topics.TopicService;
 
@@ -211,6 +212,26 @@ public class CourseServiceTest {
 		then(topicDB).isNotNull();
 		then(topicDB.getCourse()).isEqualTo(course);
 		then(topicDB).isEqualTo(topic);
+	}
+	
+	@Test (expected=TopicAssociatedToCourseException.class)
+	public void ex_deleteAllCourse_whenTopicAssociated() {
+		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		courseService.addCourse(course);
+		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		courseService.addTopicForCourse(topic1, course.getId());
+
+		courseService.deleteAll();		
+	}
+	
+	@Test (expected=TopicAssociatedToCourseException.class)
+	public void ex_deleteCourse_whenTopicAssociated() {
+		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		courseService.addCourse(course);
+		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		courseService.addTopicForCourse(topic1, course.getId());
+
+		courseService.deleteCourse(course.getId());		
 	}
 
 }
