@@ -1,0 +1,30 @@
+server:
+    port: 8081
+
+management:
+    security:
+        enabled: false
+    port: 9002
+    
+    
+stub:
+    payment-ms: true
+    
+    
+logging.level:
+    org:
+        springframework:
+            ui: warn
+            aop: warn
+            jdbc: warn
+            data: warn
+            context: warn
+            test: warn
+            beans: warn
+            orm: warn
+            core: warn
+            boot: warn
+            web: warn
+        hibernate: error
+        apache: warn
+        jboss.logging: warn
