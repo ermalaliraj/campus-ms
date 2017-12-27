@@ -106,12 +106,12 @@ public class CourseServiceTest {
 	}
 
 	@Test
-	public void insertChild_Course_thenTopic() {
-		// 1. insert Course, db child
+	public void insertParent_Course_thenChild_Topic() {
+		// 1. insert Course, db parent
 		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
-		// 2. insert Topic, db parent
+		// 2. insert Topic, db child
 		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
 		topic.setCourse(course);
 		topicService.addTopic(topic);
@@ -129,12 +129,12 @@ public class CourseServiceTest {
 	}
 
 	@Test
-	public void insertChild_Course_thenNParents_Topic() {
-		// 1. insert Course (db child)
+	public void insertParent_Course_thenNChilds_Topic() {
+		// 1. insert Course (db parent)
 		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
-		// 2. Insert 3 Topics for the course "1" (db parent)
+		// 2. Insert 3 Topics for the course "1" (db child)
 		List<TopicEntity> topicsList = new ArrayList<>();
 		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
 		topic.setCourse(course);
@@ -194,12 +194,12 @@ public class CourseServiceTest {
 	}
 
 	@Test
-	public void insertParentFirst_Topic_thenCourse_thenUpdateReference() {
-		// 1. add Topic, parent db table (1 records here)
+	public void insertChild_Topic_thenParent_Course_thenUpdateReference() {
+		// 1. add Topic, child db table (N records here)
 		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
 		topicService.addTopic(topic);
 
-		// 2. add Course, child db table (N records here)
+		// 2. add Course, parent db table (1 records here)
 		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
