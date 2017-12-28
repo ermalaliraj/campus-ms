@@ -2,5 +2,5 @@
 
 ### Student-Ms
 
-![UML Model](./doc/student.jpg)
+![UML Model](../doc/student.jpg)
 
