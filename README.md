@@ -5,7 +5,7 @@
 ![UML Model](./doc/all-layers.jpg)
 
 
-
-[Course-MS](campus-course-ms/README.md)
-[Student-MS](campus-student-ms/README.md)
-[Payment-MS](campus-payment-ms/README.md)
+# See
+* [Course-MS](campus-course-ms/README.md)
+* [Student-MS](campus-student-ms/README.md)
+* [Payment-MS](campus-payment-ms/README.md)
