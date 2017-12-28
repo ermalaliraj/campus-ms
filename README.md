@@ -6,4 +6,6 @@
 
 
 
+[Course-MS](campus-course-ms/README.md)
 [Student-MS](campus-student-ms/README.md)
+[Payment-MS](campus-payment-ms/README.md)
