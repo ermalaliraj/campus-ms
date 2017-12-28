@@ -5,7 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import com.ea.campus.ms.payment.entity.PaymentStudentEntity;
 
 public interface PaymentRepository extends CrudRepository<PaymentStudentEntity, String> {
-	
-	public PaymentStudentEntity findByName(String name);//impl from framework
-	
+
 }

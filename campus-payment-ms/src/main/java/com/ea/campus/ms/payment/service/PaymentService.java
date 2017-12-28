@@ -1,5 +1,8 @@
 package com.ea.campus.ms.payment.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +13,28 @@ import com.ea.campus.ms.payment.repository.PaymentRepository;
 public class PaymentService {
 
 	@Autowired
-	private PaymentRepository paymentRepository;
+	public PaymentRepository paymentRepository;
 
-	public PaymentStudentEntity getByName(String name) {
-		return paymentRepository.findByName(name);
+	public PaymentStudentEntity getPaymentStudent(String id) {
+		return paymentRepository.findOne(id);
+	}
+
+	public void addPaymentStudent(PaymentStudentEntity paymentStudent) {
+		paymentRepository.save(paymentStudent);
+	}
+
+	public List<PaymentStudentEntity> getAllPaymentStudents() {
+		List<PaymentStudentEntity> paymentStudents = new ArrayList<>();
+		paymentRepository.findAll().forEach(paymentStudents::add);
+		return paymentStudents;
+	}
+
+	public void deletePaymentStudent(String id) {
+		paymentRepository.delete(id);
+	}
+	
+	public void deleteAll() {
+		paymentRepository.deleteAll();
 	}
 
 }
