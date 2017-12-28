@@ -2,5 +2,5 @@
 
 ### Student-Ms
 
-![UML Model](../doc/student.jpg)
+![UML Model](https://github.com/ermalaliraj/campus-ms/blob/master/doc/student-ms.jpg)
 
