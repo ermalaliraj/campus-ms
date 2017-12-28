@@ -34,3 +34,8 @@ Post Header
 [{"key":"Content-Type","value":"application/json","description":""}]
 
 ```
+
+# See
+* [Campus-MS] Parent directory
+
+[Campus-MS]: <https://github.com/ermalaliraj/campus-ms>
