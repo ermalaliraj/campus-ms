@@ -39,8 +39,8 @@ public class TopicController {
 		log.info("Saved in DB: " + topic);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/topics/{id}")
-	public void updateTopic(@RequestBody TopicEntity topic, @PathVariable String id) {
+	@RequestMapping(method = RequestMethod.PUT, value = "/topics")
+	public void updateTopic(@RequestBody TopicEntity topic) {
 		topicService.updateTopic(topic);
 		log.info("Updated in DB: " + topic);
 	}

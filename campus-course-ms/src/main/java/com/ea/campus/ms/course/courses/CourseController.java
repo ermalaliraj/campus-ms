@@ -47,8 +47,8 @@ public class CourseController {
 		log.info("Saved in DB: " + course);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/courses/{id}")
-	public void updateCourse(@RequestBody CourseEntity course, @PathVariable String id) {
+	@RequestMapping(method = RequestMethod.PUT, value = "/courses")
+	public void updateCourse(@RequestBody CourseEntity course) {
 		courseService.updateCourse(course);
 		log.info("Updated in DB: " + course);
 	}
