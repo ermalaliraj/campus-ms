@@ -1,5 +1,10 @@
 # campus-course-ms
 
+### UML
+
+![UML Model](https://github.com/ermalaliraj/campus-ms/blob/master/doc/course-ms.jpg)
+
+
 ### Rest Calls
 ```
 GET  http://127.0.0.1:8080/courses
