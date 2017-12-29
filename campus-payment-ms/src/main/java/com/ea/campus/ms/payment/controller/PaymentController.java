@@ -31,10 +31,10 @@ public class PaymentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/student")
-	public List<PaymentStudentEntity> getAllTopics() {
-		List<PaymentStudentEntity> paymentStudents = paymentService.getAllPaymentStudents();
-		log.info("Tot paymentStudents found in DB: " + paymentStudents.size());
-		return paymentStudents;
+	public List<PaymentStudentEntity> getAllPaymentsStudents() {
+		List<PaymentStudentEntity> paymentsStudents = paymentService.getAllPaymentsStudents();
+		log.info("Tot paymentsStudents found in DB: " + paymentsStudents.size());
+		return paymentsStudents;
 	}
 
 	@RequestMapping("/student/{id}")
@@ -59,7 +59,7 @@ public class PaymentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/student/deleteall")
-	public void deleteAllPaymentStudents() {
+	public void deleteAllPaymentsStudents() {
 		paymentService.deleteAll();
 		log.info("Deleted ALL PaymentStudents from DB");
 	}

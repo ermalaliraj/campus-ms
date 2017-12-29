@@ -50,7 +50,7 @@ public class PaymentServiceTest {
 		paymentService.addPaymentStudent(new PaymentStudentEntity("ermal3_notok", PaymentType.NOTOK));
 
 		// 3. Get list
-		List<PaymentStudentEntity> list = paymentService.getAllPaymentStudents();
+		List<PaymentStudentEntity> list = paymentService.getAllPaymentsStudents();
 		log.debug("paymentStudent list: " + list);
 		then(list).isNotNull();
 		then(list.size()).isEqualTo(5);

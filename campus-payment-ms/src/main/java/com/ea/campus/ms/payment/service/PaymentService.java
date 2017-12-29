@@ -23,7 +23,7 @@ public class PaymentService {
 		paymentRepository.save(paymentStudent);
 	}
 
-	public List<PaymentStudentEntity> getAllPaymentStudents() {
+	public List<PaymentStudentEntity> getAllPaymentsStudents() {
 		List<PaymentStudentEntity> paymentStudents = new ArrayList<>();
 		paymentRepository.findAll().forEach(paymentStudents::add);
 		return paymentStudents;
