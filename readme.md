@@ -1,6 +1,7 @@
 # campus-ms
 
 ### Campus components
+Components of the simple architecture, non High-Availability. 
 
 ![UML Model](./doc/components2.jpg)
 
