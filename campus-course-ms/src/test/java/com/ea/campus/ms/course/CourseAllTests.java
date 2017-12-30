@@ -9,6 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	CourseServiceTest.class,
 	CourseIntegrationTests.class
 })
-public class AllTests {
+public class CourseAllTests {
 
 }

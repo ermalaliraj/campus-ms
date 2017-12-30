@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ea.campus.ms.payment.entity.PaymentStudentEntity;
-import com.ea.campus.ms.payment.entity.PaymentType;
 import com.ea.campus.ms.payment.service.PaymentService;
 
 @RestController
@@ -40,9 +39,7 @@ public class PaymentController {
 	@RequestMapping("/student/{id}")
 	public PaymentStudentEntity getPaymentForStudent(@PathVariable String id) {
 		PaymentStudentEntity ret = paymentService.getPaymentStudent(id);
-		if (ret == null) {
-			ret = new PaymentStudentEntity(id, PaymentType.NEUTRAL);
-		}
+		log.info("Found in DB: " + ret);
 		return ret;
 	}
 

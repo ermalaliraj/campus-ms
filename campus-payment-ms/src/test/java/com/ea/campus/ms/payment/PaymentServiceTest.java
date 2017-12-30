@@ -43,23 +43,31 @@ public class PaymentServiceTest {
 		then(paymentStudentDB).isNotNull();
 		then(paymentStudentDB).isEqualTo(paymentStudent);
 
-		// insert other 4
+		// 3. insert other 4
 		paymentService.addPaymentStudent(new PaymentStudentEntity("ermal2", PaymentType.OK));
 		paymentService.addPaymentStudent(new PaymentStudentEntity("ermal2_notok", PaymentType.NOTOK));
 		paymentService.addPaymentStudent(new PaymentStudentEntity("ermal3", PaymentType.OK));
 		paymentService.addPaymentStudent(new PaymentStudentEntity("ermal3_notok", PaymentType.NOTOK));
 
-		// 3. Get list
+		// 4. Get list
 		List<PaymentStudentEntity> list = paymentService.getAllPaymentsStudents();
-		log.debug("paymentStudent list: " + list);
 		then(list).isNotNull();
 		then(list.size()).isEqualTo(5);
 
-		// 5. Delete
-		paymentService.deletePaymentStudent(paymentStudent.getId());
-		paymentStudentDB = paymentService.getPaymentStudent(paymentStudent.getId());
+		// 5. Delete ermal
+		paymentService.deletePaymentStudent("ermal");
+		paymentStudentDB = paymentService.getPaymentStudent("ermal");
 		log.debug("paymentStudentDB: " + paymentStudentDB);
 		then(paymentStudentDB).isNull();
+		list = paymentService.getAllPaymentsStudents();
+		then(list).isNotNull();
+		then(list.size()).isEqualTo(4);
+		
+		// 6. delete all
+		paymentService.deleteAll();
+		list = paymentService.getAllPaymentsStudents();
+		then(list).isNotNull();
+		then(list.size()).isEqualTo(0);
 	}
 
 }

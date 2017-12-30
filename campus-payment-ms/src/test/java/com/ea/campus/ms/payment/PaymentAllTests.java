@@ -9,6 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	PaymentServiceTest.class,
 	PaymentIntegrationTests.class
 })
-public class AllTests {
+public class PaymentAllTests {
 
 }

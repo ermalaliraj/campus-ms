@@ -50,7 +50,6 @@ public class PaymentIntegrationTests {
 		then(resp.getBody()).isNotNull();
 	}
 
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void test_topic_CRUD() throws Exception {
@@ -79,7 +78,6 @@ public class PaymentIntegrationTests {
 		// 5. Delete
 		testRestTemplate.delete(host + port + "/payments/student/" + id);
 		log.debug("PaymentStudent deleted");
-		// check deleted
 		resp = testRestTemplate.getForEntity(host + port + "/payments/student/" + id, PaymentStudentEntity.class);
 		log.debug("resp Deleted: " + resp.getBody());
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);

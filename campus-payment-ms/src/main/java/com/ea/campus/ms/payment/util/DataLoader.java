@@ -28,6 +28,7 @@ public class DataLoader implements ApplicationRunner {
 		log.debug("*** End population DB with test data ***");
 	}
 
+	@SuppressWarnings("unused")
 	private void populateDB() {		
 		PaymentStudentEntity e = new PaymentStudentEntity("ermal", PaymentType.OK);
 		paymentRepository.save(e);
