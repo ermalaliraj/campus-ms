@@ -5,7 +5,7 @@
 ![UML Model](./doc/components2.jpg)
 
 ### Data Flow
-For each FE section entity/dto used in MS layer, and for each MS the DB tables used. 
+For each FE section the entity/dto and DB tables used in each MS. 
 
 ![UML Model](./doc/all-layers.jpg)
 
