@@ -1,6 +1,10 @@
 # campus-ms
 
-### Front-end - Microservice - DB
+### Campus components
+
+![UML Model](./doc/components.jpg)
+
+### Flow
 
 ![UML Model](./doc/all-layers.jpg)
 
