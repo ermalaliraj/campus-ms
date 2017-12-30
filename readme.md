@@ -2,7 +2,7 @@
 
 ### Campus components
 
-![UML Model](./doc/components.jpg)
+![UML Model](./doc/components2.jpg)
 
 ### Flow
 
