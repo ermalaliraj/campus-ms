@@ -28,15 +28,15 @@ public class DataLoader implements ApplicationRunner {
 	}
 
 	private void populateDB() {		
-		StudentEntity e = new StudentEntity("ermal", "");
+		StudentEntity e = new StudentEntity("ermal", "ermal", "");
 		paymentRepository.save(e);
 		log.debug("Inserted test data: " + e);
 		
-		e = new StudentEntity("ermal_notok", "");
+		e = new StudentEntity("ermal_notok", "ermal_notok", "");
 		paymentRepository.save(e);
 		log.debug("Inserted test data: " + e);
 		
-		e = new StudentEntity("ermal_neutral", ""); //not present in /payment
+		e = new StudentEntity("ermal_neutral", "ermal_neutral", ""); //not present in /payment
 		paymentRepository.save(e);
 		log.debug("Inserted test data: " + e);
 	}

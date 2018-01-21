@@ -18,13 +18,13 @@ public class PaymentFetchServiceStub implements PaymentFetchService {
 	private static final String STUB_PREFIX = "stubs/payment/";
 	private static final String STUB_SUFFIX = ".json";
 
-	public PaymentTypeDTO getPaymentForStudent(String name) {
+	public PaymentTypeDTO getPaymentForStudent(String id) {
 		PaymentTypeDTO dto = null; 
 		try {
-			dto = StubFileReader.createResourceFromFile(STUB_PREFIX + name + STUB_SUFFIX, PaymentTypeDTO.class);
-			log.info("PaymentTypeDTO for student '" + name + "' is " + dto);
+			dto = StubFileReader.createResourceFromFile(STUB_PREFIX + id + STUB_SUFFIX, PaymentTypeDTO.class);
+			log.info("PaymentTypeDTO for student id: " + id + " is " + dto);
 		} catch (StubFileException e) {
-			log.error("Error reading payment-stub for student '" + name + "', returning the default value PaymentType.NEUTRAL");
+			log.error("Error reading payment-stub for student id: " + id + ", returning the default value PaymentType.NEUTRAL");
 			dto = new PaymentTypeDTO(PaymentType.NEUTRAL);
 		}
 		return dto;

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class ImmutableServiceExecutionContext extends ServiceExecutionContext {
 
-	private static final String IMMUTABLE = "Cannot modify immutable object.";
+	private static final String IMMUTABLE = "Immutable object, cannot modify!";
 
 	ImmutableServiceExecutionContext(final ServiceExecutionContext serviceExecutionContext) {
 		super(serviceExecutionContext.getHeaders());

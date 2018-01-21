@@ -6,7 +6,6 @@ public interface CurieExternal {
 
 	String PAYMENT_SERVICE = "payment-ms";
 	String PAYMENT_NAMESPACE = "ea";
-	String PAYMENT_TAG = PAYMENT_NAMESPACE + SEPARATOR + "payment";
-	
+	String PAYMENT_TAG = PAYMENT_NAMESPACE + SEPARATOR + "student";
 	
 }

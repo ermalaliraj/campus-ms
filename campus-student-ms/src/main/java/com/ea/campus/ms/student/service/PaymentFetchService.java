@@ -4,6 +4,6 @@ import com.ea.campus.ms.student.dto.external.PaymentTypeDTO;
 
 public interface PaymentFetchService {
 
-	public PaymentTypeDTO getPaymentForStudent(String name);
+	public PaymentTypeDTO getPaymentForStudent(String id);
 	
 }

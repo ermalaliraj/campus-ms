@@ -53,7 +53,7 @@ public class CourseServiceTest {
 
 		// 3. Get list
 		List<TopicEntity> list = topicService.getAllTopics();
-		log.debug("topic list: " + topicDB);
+		log.debug("topic list: " + list);
 		then(list).isNotNull();
 		then(list.size()).isEqualTo(1);
 

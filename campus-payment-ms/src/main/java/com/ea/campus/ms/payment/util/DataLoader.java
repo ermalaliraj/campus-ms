@@ -24,11 +24,10 @@ public class DataLoader implements ApplicationRunner {
 
 	public void run(ApplicationArguments args) {
 		log.debug("*** Populating DB with test data ***");
-		//populateDB();
+		populateDB();
 		log.debug("*** End population DB with test data ***");
 	}
 
-	@SuppressWarnings("unused")
 	private void populateDB() {		
 		PaymentStudentEntity e = new PaymentStudentEntity("ermal", PaymentType.OK);
 		paymentRepository.save(e);

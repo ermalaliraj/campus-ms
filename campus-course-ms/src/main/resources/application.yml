@@ -1,10 +1,28 @@
-#server:
-#    port: 8081
-#
-#management:
-#    security:
-#        enabled: false
-#    port: 9001
+server:
+  port: ${PORT:8098}
+
+# configure eureka client
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+  client:
+    serviceUrl:
+      defaultZone: http://user:password@localhost:8761/eureka/
+    
+# give the application a name
+spring:
+  application:
+    name: course-ms
+# custom attribute for the actuator info endpoint
+info:
+  app:
+    name: course-ms
+    
+# disable actuator security for endpoints 
+management:
+  security:
+    enabled: false
     
     
 stub:
@@ -29,3 +47,4 @@ logging.level:
         hibernate.SQL: warn
         apache: warn
         jboss.logging: warn
+    com.ea: debug

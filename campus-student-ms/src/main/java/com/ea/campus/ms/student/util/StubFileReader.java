@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class StubFileReader {
 	
-	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperUtils.getObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperUtils.getDefaultObjectMapper();
 
 	private StubFileReader() {
 	}

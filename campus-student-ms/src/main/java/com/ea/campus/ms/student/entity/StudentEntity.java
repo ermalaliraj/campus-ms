@@ -1,9 +1,10 @@
 package com.ea.campus.ms.student.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -11,7 +12,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class StudentEntity {
 
 	@Id
-	@GeneratedValue
 	private String id;
 	private String name;
 	private String surname;
@@ -24,10 +24,6 @@ public class StudentEntity {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-	}
-
-	public StudentEntity(String name, String surname) {
-		this(null, name, surname);
 	}
 
 	public String getId() {
@@ -62,6 +58,28 @@ public class StudentEntity {
 		this.jobTitle = jobTitle;
 	}
 
+	public boolean equals(final Object other) {
+		if (!(other instanceof StudentEntity))
+			return false;
+		StudentEntity o = (StudentEntity) other;
+
+		return new EqualsBuilder()
+				.append(id, o.id)
+				.append(name, o.name)
+				.append(surname, o.surname)
+				.append(jobTitle, o.jobTitle)
+				.isEquals();
+	}
+
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(id)
+				.append(name)
+				.append(surname)
+				.append(jobTitle)
+				.toHashCode();
+	}
+	
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).appendSuper(super.toString())
 				.append("id", id)

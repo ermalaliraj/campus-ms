@@ -1,14 +1,23 @@
 server:
-    port: 8081
+  port: ${PORT:8030}
+  contextPath: /payment-ms
+  context-path: /payment-ms  # spring-boot-admin 
 
-management:
-    security:
-        enabled: false
-    port: 9002
-
-
-stub:
-    payment-ms: true
+# configure eureka client. Enamble/disable with @EnableEurekaClient App 
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+  client:
+    serviceUrl:
+      defaultZone: http://user:password@localhost:8761/eureka/
+    
+spring:
+  application:
+    name: payment-ms
+info:
+  app:
+    name: payment-ms
 
 
 logging.level:
@@ -28,3 +37,5 @@ logging.level:
         hibernate: error
         apache: warn
         jboss.logging: warn
+    com.netflix.discovery: warn
+    com.ea: debug

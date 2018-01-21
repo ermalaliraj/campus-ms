@@ -2,12 +2,12 @@ package com.ea.campus.ms.student.context;
 
 public interface ExecutionContextStrategy {
 	/**
-	 * Gets the execution context. Initializes it if needed.
+	 * Initialize and gets the execution context. 
 	 */
 	ServiceExecutionContext getContext();
 
 	/**
-	 * Resets the current context and returns it.
+	 * Resets the execution context and returns it.
 	 */
 	ServiceExecutionContext resetContext();
 
@@ -17,8 +17,8 @@ public interface ExecutionContextStrategy {
 	void fixContext();
 
 	/**
-	 * Removes the {@link ThreadLocal} related to the ExecutionContextStrategy. This should be only called when all the job of the server
-	 * side has been done!
+	 * Removes the {@link ThreadLocal} related to the ExecutionContextStrategy. 
+	 * This is called when all the job of the server side has completed.
 	 */
 	void removeContext();
 }

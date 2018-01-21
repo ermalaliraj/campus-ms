@@ -23,10 +23,11 @@ public class PaymentFetchServiceImpl extends AbstractRestClientServiceStudentMs 
 	@Override
 	public PaymentTypeDTO getPaymentForStudent(String name) {
 		Map<String, Object> input = new HashMap<>();
+		input.put("id", name);
+		
 		String url = getLinkUrl(PAYMENT_SERVICE, PAYMENT_TAG, input);
 		log.debug("Fetching data from: " + url);
-		return get(url, PaymentTypeDTO.class);
+		return get(url, PaymentTypeDTO.class, input);
 	}
-
-
+	
 }

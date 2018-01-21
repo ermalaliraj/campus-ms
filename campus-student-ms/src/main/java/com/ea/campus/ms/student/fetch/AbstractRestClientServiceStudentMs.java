@@ -12,7 +12,7 @@ import com.ea.campus.ms.student.context.ExecutionContextAccessor;
 
 public abstract class AbstractRestClientServiceStudentMs extends AbstractRestClientService {
 
-	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("node_red", "stubbing_profile");
+	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("header1", "header2");
 
 	@Override
 	protected String microservicePropertyName() {
@@ -33,14 +33,12 @@ public abstract class AbstractRestClientServiceStudentMs extends AbstractRestCli
 		if (httpHeaders == null) {
 			return null;
 		}
-
 		HttpHeaders forwardedHeaders = new HttpHeaders();
 		for (String key : httpHeaders.keySet()) {
 			if (HEADERS_TO_KEEP.contains(key.toLowerCase())) {
 				forwardedHeaders.add(key, httpHeaders.getFirst(key));
 			}
 		}
-
 		return forwardedHeaders;
 	}
 

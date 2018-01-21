@@ -4,7 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.List;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,17 +34,19 @@ public class PaymentIntegrationTests {
 	@Value("${local.management.port}")
 	private int mgt;
 	private String host = "http://localhost:";
+	private String service = "/payment-ms";
+
 	@Autowired
 	private TestRestTemplate testRestTemplate;
 
-	@After
+	@Before
 	public void afterEachTest() {
-		testRestTemplate.getForEntity(host + port + "/payments/student/deleteall", Void.class);
+		testRestTemplate.getForEntity(host + port + "/student/deleteall", Void.class);
 	}
 
 	@Test
 	public void testPing() throws Exception {
-		ResponseEntity<String> resp = testRestTemplate.getForEntity(host + port + "/payments/ping", String.class);
+		ResponseEntity<String> resp = testRestTemplate.getForEntity(host + port + service + "/payments/ping", String.class);
 		log.debug("Date from MS: " + resp.getBody());
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNotNull();
@@ -56,18 +58,18 @@ public class PaymentIntegrationTests {
 		String id = "ermal";
 		// 1. Insert
 		PaymentStudentEntity entity = new PaymentStudentEntity(id, PaymentType.OK);
-		ResponseEntity<Void> postResp = testRestTemplate.postForEntity(host + port + "/payments/student", entity, Void.class, entity);
+		ResponseEntity<Void> postResp = testRestTemplate.postForEntity(host + port + service + "/payments/student", entity, Void.class, entity);
 		then(postResp.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		// 2. Get
-		ResponseEntity<PaymentStudentEntity> resp = testRestTemplate.getForEntity(host + port + "/payments/student/" + id, PaymentStudentEntity.class);
+		ResponseEntity<PaymentStudentEntity> resp = testRestTemplate.getForEntity(host + port + service + "/payments/student/" + id, PaymentStudentEntity.class);
 		log.debug("getResp: " + resp.getBody());
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNotNull();
 		then(((PaymentStudentEntity) resp.getBody())).isEqualTo(entity);
 
 		// 3. Get list
-		ResponseEntity<List> respList = testRestTemplate.getForEntity(host + port + "/payments/student", List.class);
+		ResponseEntity<List> respList = testRestTemplate.getForEntity(host + port + service + "/payments/student", List.class);
 		log.debug("getResp as List: " + respList.getBody());
 		then(respList.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNotNull();
@@ -78,7 +80,7 @@ public class PaymentIntegrationTests {
 		// 5. Delete
 		testRestTemplate.delete(host + port + "/payments/student/" + id);
 		log.debug("PaymentStudent deleted");
-		resp = testRestTemplate.getForEntity(host + port + "/payments/student/" + id, PaymentStudentEntity.class);
+		resp = testRestTemplate.getForEntity(host + port + service + "/payments/student/" + id, PaymentStudentEntity.class);
 		log.debug("resp Deleted: " + resp.getBody());
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNull();

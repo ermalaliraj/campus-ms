@@ -23,9 +23,9 @@ import com.ea.campus.ms.student.dto.StudentDTO;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { StudentApp.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = { "management.port=0" })
-public class StudentAppTest {
+public class StudentIntegrationTest {
 
-	private static final transient Logger log = LoggerFactory.getLogger(StudentAppTest.class);
+	private static final transient Logger log = LoggerFactory.getLogger(StudentIntegrationTest.class);
 
 	@LocalServerPort
 	private int port;
