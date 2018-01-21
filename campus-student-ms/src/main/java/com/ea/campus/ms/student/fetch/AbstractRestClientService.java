@@ -152,70 +152,6 @@ public abstract class AbstractRestClientService {
 		return executeEntity(url, HttpMethod.PATCH, headers, payload, responseType, parameters);
 	}
 
-	protected <T> T getGeneric(String url, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.GET, (HttpHeaders) null, (Object) null, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T getGeneric(String url, HttpHeaders headers, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.GET, headers, (Object) null, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> getEntityGeneric(String url, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.GET, (HttpHeaders) null, (Object) null, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> getEntityGeneric(String url, HttpHeaders headers, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.GET, headers, (Object) null, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T postGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.POST, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T postGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.POST, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> postEntityGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.POST, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> postEntityGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.POST, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T putGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.PUT, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T putGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.PUT, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> putEntityGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.PUT, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> putEntityGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.PUT, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T patchGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.PATCH, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> T patchGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeGeneric(url, HttpMethod.PATCH, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> patchEntityGeneric(String url, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.PATCH, (HttpHeaders) null, payload, parameterizedTypeReference, parameters);
-	}
-
-	protected <T> ResponseEntity<T> patchEntityGeneric(String url, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityGeneric(url, HttpMethod.PATCH, headers, payload, parameterizedTypeReference, parameters);
-	}
-
 	<T> T execute(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
 		ResponseEntity<T> responseEntity = executeEntity(url, method, headers, payload, responseType, parameters);
 		return responseEntity.getBody();
@@ -225,38 +161,17 @@ public abstract class AbstractRestClientService {
 		return executeEntityObject(url, method, headers, payload, responseType, parameters);
 	}
 
-	<T> T executeGeneric(String url, HttpMethod method, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		ResponseEntity<T> responseEntity = executeEntityGeneric(url, method, headers, payload, parameterizedTypeReference, parameters);
-		return responseEntity.getBody();
-	}
-
-	<T> ResponseEntity<T> executeEntityGeneric(String url, HttpMethod method, HttpHeaders headers, Object payload, ParameterizedTypeReference parameterizedTypeReference, Object... parameters) {
-		return executeEntityObject(url, method, headers, payload, parameterizedTypeReference, parameters);
-	}
-
-	<T> ResponseEntity<T> executeEntityObject(String url, HttpMethod method, HttpHeaders headers, Object payload, Object type, Object... parameters) {
+	<T> ResponseEntity<T> executeEntityObject(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
 		StopWatch watch = new StopWatch();
 		watch.start();
-		HttpEntity requestEntity = new HttpEntity(payload, headers);
-		ResponseEntity responseEntity = null;
+		HttpEntity<Object> requestEntity = new HttpEntity<Object>(payload, headers);
+		ResponseEntity<T> responseEntity = null;
 
 		try {
-			if (type instanceof Class) {
-				if (parameters != null && parameters.length > 0) {
-					responseEntity = restTemplate.exchange(url, method, requestEntity, (Class) type, parameters);
-				} else {
-					responseEntity = restTemplate.exchange(url, method, requestEntity, (Class) type, new Object[0]);
-				}
+			if (parameters != null && parameters.length > 0) {
+				responseEntity = restTemplate.exchange(url, method, requestEntity, responseType, parameters);
 			} else {
-				if (!(type instanceof ParameterizedTypeReference)) {
-					throw new IllegalArgumentException("The object type is not the right type : " + type.getClass());
-				}
-
-				if (parameters != null && parameters.length > 0) {
-					responseEntity = restTemplate.exchange(url, method, requestEntity, (ParameterizedTypeReference) type, parameters);
-				} else {
-					responseEntity = restTemplate.exchange(url, method, requestEntity, (ParameterizedTypeReference) type, new Object[0]);
-				}
+				responseEntity = restTemplate.exchange(url, method, requestEntity, responseType, new Object[0]);
 			}
 
 			watch.stop();
@@ -280,8 +195,8 @@ public abstract class AbstractRestClientService {
 
 	public ErrorResource extractErrorResource(RestClientException e) throws IOException {
 		return e instanceof HttpClientErrorException
-				? (ErrorResource) ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpClientErrorException) e).getResponseBodyAsString(), ErrorResource.class)
-				: (ErrorResource) ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpServerErrorException) e).getResponseBodyAsString(), ErrorResource.class);
+				? ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpClientErrorException) e).getResponseBodyAsString(), ErrorResource.class)
+				: ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpServerErrorException) e).getResponseBodyAsString(), ErrorResource.class);
 	}
 
 	public boolean checkService(String service) {
@@ -295,11 +210,11 @@ public abstract class AbstractRestClientService {
 				}
 
 				url = url + "/health";
-				httpResponse = httpExecute(HttpMethod.GET, url, (Map) null);
+				httpResponse = httpExecute(HttpMethod.GET, url, (Map<String, String>) null);
 				String response = IOUtils.toString(httpResponse.getBody());
 				Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider());
 				ReadContext context = JsonPath.parse(response, configuration);
-				String status = (String) context.read("$.status.status", String.class, new Predicate[0]);
+				String status = context.read("$.status.status", String.class, new Predicate[0]);
 				rv = status != null && status.equals("UP");
 			} catch (URISyntaxException | IOException var12) {
 				rv = false;
@@ -318,10 +233,10 @@ public abstract class AbstractRestClientService {
 		}
 
 		String url;
-		if (CollectionUtils.isEmpty((Map) params)) {
+		if (CollectionUtils.isEmpty((Map<String, Object>) params)) {
 			url = getLinkUrl(service, rel);
 		} else {
-			url = getLinkUrl(service, rel, (Map) params);
+			url = getLinkUrl(service, rel, (Map<String, Object>) params);
 		}
 
 		return httpExecute(HttpMethod.GET, url, headersMap);

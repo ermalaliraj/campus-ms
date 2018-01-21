@@ -6,7 +6,7 @@ import java.util.Map;
 public class ServiceExecutionContext {
 
 	private Map<String, String> headers = new HashMap<>();
-	private Map<Class, Object> jwts = new HashMap<>();
+	private Map<Class<?>, Object> jwts = new HashMap<>();
 
 	ServiceExecutionContext() {
 	}
@@ -45,19 +45,19 @@ public class ServiceExecutionContext {
 		return true;
 	}
 
-	public Object getJwt(Class clazz) {
+	public Object getJwt(Class<?> clazz) {
 		return jwts.get(clazz);
 	}
 
-	public void removeJwt(Class clazz) {
+	public void removeJwt(Class<?> clazz) {
 		jwts.remove(clazz);
 	}
 
-	public Map<Class, Object> getJwts() {
+	public Map<Class<?>, Object> getJwts() {
 		return jwts;
 	}
 
-	public void setJwts(Map<Class, Object> jwts) {
+	public void setJwts(Map<Class<?>, Object> jwts) {
 		this.jwts = jwts;
 	}
 }

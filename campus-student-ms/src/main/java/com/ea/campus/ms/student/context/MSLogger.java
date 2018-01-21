@@ -57,13 +57,12 @@ public class MSLogger implements Logger {
 			fullUrl = new UriTemplate(url).expand(parameters).toString();
 		}
 		StringBuilder sb = new StringBuilder("url=").append(fullUrl);
-		sb.append(" method=").append(method);
-		sb.append(" status=").append((statusCode == null ? "unknown" : statusCode));
-		sb.append(" total time=").append(elapsedTime);
-		sb.append(" method=").append(method);
+		sb.append("\t method=").append(method);
+		sb.append("\t status=").append((statusCode == null ? "unknown" : statusCode));
+		sb.append("\t total time=").append(elapsedTime);
 
 		if (inputMessage != null) {
-			sb.append("\n   InputMessage: ").append(StringUtils.substring(inputMessage, 0, maxJsonLength));
+			sb.append("\n   InputMessage : ").append(StringUtils.substring(inputMessage, 0, maxJsonLength));
 		}
 		if (outputMessage != null) {
 			sb.append("\n   OutputMessage: ").append(StringUtils.substring(outputMessage, 0, maxJsonLength));

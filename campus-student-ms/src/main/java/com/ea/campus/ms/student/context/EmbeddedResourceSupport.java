@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EmbeddedResourceSupport extends ResourceSupport {
-	private Map<String, Object> embedded = new HashMap();
+	private Map<String, Object> embedded = new HashMap<>();
 
 	public EmbeddedResourceSupport() {
 	}
@@ -54,10 +54,12 @@ public class EmbeddedResourceSupport extends ResourceSupport {
 		return (ResourceSupport) this.embedded.get(rel);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Set<ResourceSupport> getEmbeddedResourcesByRel(String rel) {
-		return (Set) this.embedded.get(rel);
+		return (Set<ResourceSupport>) this.embedded.get(rel);
 	}
 
+	@SuppressWarnings("unused")
 	private void set_embedded(Map<String, Object> embedded) {
 		this.embedded = embedded;
 	}
