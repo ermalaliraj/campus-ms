@@ -38,7 +38,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ea.campus.ms.student.context.MSLogger;
-import com.ea.campus.ms.student.discovery.TraversonUtil;
+import com.ea.campus.ms.student.discovery.DiscoveryClientUtil;
 import com.ea.campus.ms.student.exception.ErrorResource;
 import com.ea.campus.ms.student.util.ObjectMapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,11 +56,9 @@ public abstract class AbstractRestClientService {
 	protected RestTemplate restTemplate = new RestTemplate(getMessageConverters());
 	protected ClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 	@Autowired
-	protected TraversonUtil traversonUtil;
+	protected DiscoveryClientUtil discoveryClientUtil;
 	@Value("${restClient.maxJsonLogSize:5000}")
 	int maxJsonLogSize;
-	@Value("${restClient.requestLog.ms:10000}")
-	int requestLogThreshold;
 
 	public AbstractRestClientService() {
 	}
@@ -68,9 +66,6 @@ public abstract class AbstractRestClientService {
 	@PostConstruct
 	public void init() {
 		logger = new MSLogger(getClass(), maxJsonLogSize);
-		// StubbingPropagateInterceptor interceptor = new StubbingPropagateInterceptor();
-		// interceptor.setAbstractRestClientService(this);
-		// restTemplate.setInterceptors(Collections.singletonList(interceptor));
 	}
 
 	private static boolean mustDecodeURL() {
@@ -265,27 +260,21 @@ public abstract class AbstractRestClientService {
 			}
 
 			watch.stop();
-			if (watch.getTime() > (long) requestLogThreshold) {
-				logger.logMicroServiceCallInfo(url, method, convertObjectToJsonString(payload),
-						responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(),
-						responseEntity != null ? responseEntity.getStatusCode() : null, parameters);
-			} else if (logger.isDebugEnabled()) {
-				logger.logMicroServiceCallDebug(url, method, convertObjectToJsonString(payload),
-						responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(),
-						responseEntity != null ? responseEntity.getStatusCode() : null, parameters);
+			if (logger.isDebugEnabled()) {
+				logger.logMicroServiceCallDebug(url, method, convertObjectToJsonString(payload)
+						, responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null
+						, watch.getTime()
+						, responseEntity != null ? responseEntity.getStatusCode() : null, parameters);
 			}
-
 			return responseEntity;
-		} catch (HttpServerErrorException | HttpClientErrorException var11) {
+		} catch (HttpServerErrorException | HttpClientErrorException e) {
 			watch.stop();
-			logger.logMicroServiceCallError(url, method, convertObjectToJsonString(payload),
-					responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(), var11.getStatusCode(), parameters);
-			throw var11;
-		} catch (RestClientException var12) {
+			logger.logMicroServiceCallError(url, method, convertObjectToJsonString(payload), responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(), e.getStatusCode(), parameters);
+			throw e;
+		} catch (RestClientException e) {
 			watch.stop();
-			logger.logMicroServiceCallError(url, method, convertObjectToJsonString(payload),
-					responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(), (HttpStatus) null, parameters);
-			throw var12;
+			logger.logMicroServiceCallError(url, method, convertObjectToJsonString(payload), responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null, watch.getTime(), (HttpStatus) null, parameters);
+			throw e;
 		}
 	}
 
@@ -295,17 +284,14 @@ public abstract class AbstractRestClientService {
 				: (ErrorResource) ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpServerErrorException) e).getResponseBodyAsString(), ErrorResource.class);
 	}
 
-	public Boolean checkService(String service) {
+	public boolean checkService(String service) {
 		ClientHttpResponse httpResponse = null;
-
-		Boolean var8;
+		boolean rv = false;
 		try {
-			Boolean var4;
 			try {
 				String url = getLinkUrl(service);
 				if (url == null) {
-					var4 = false;
-					return var4;
+					return false;
 				}
 
 				url = url + "/health";
@@ -314,18 +300,16 @@ public abstract class AbstractRestClientService {
 				Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider());
 				ReadContext context = JsonPath.parse(response, configuration);
 				String status = (String) context.read("$.status.status", String.class, new Predicate[0]);
-				var8 = status != null && status.equals("UP");
+				rv = status != null && status.equals("UP");
 			} catch (URISyntaxException | IOException var12) {
-				var4 = false;
-				return var4;
+				rv = false;
 			}
 		} finally {
 			if (httpResponse != null) {
 				httpResponse.close();
 			}
 		}
-
-		return var8;
+		return rv;
 	}
 
 	protected ClientHttpResponse httpGet(String service, String rel, Map<String, Object> params, Map<String, String> headersMap) throws URISyntaxException, IOException {
@@ -369,19 +353,23 @@ public abstract class AbstractRestClientService {
 	}
 
 	protected String getLinkUrl(String service, String rel, Map<String, Object> params, HttpHeaders headers) {
-		return traversonUtil.getLinkUrl(service, rel, params, headers);
+		return discoveryClientUtil.getLinkUrl(service, rel, params, headers);
 	}
 
 	protected String getLinkUrl(String service, String rel, Map<String, Object> params) {
-		return traversonUtil.getLinkUrl(service, rel, params);
+		return discoveryClientUtil.getLinkUrl(service, rel, params);
+	}
+	
+	public String getLinkUrl(String service, String rel, HttpHeaders filterHeaders) {
+		return discoveryClientUtil.getLinkUrl(service, rel, filterHeaders);
 	}
 
 	protected String getLinkUrl(String service, String rel) {
-		return traversonUtil.getLinkUrl(service, rel);
+		return discoveryClientUtil.getLinkUrl(service, rel);
 	}
 
 	protected String getLinkUrl(String service) {
-		return traversonUtil.getLinkUrl(service);
+		return discoveryClientUtil.getLinkUrl(service);
 	}
 
 	protected ObjectMapper createMapper() {
@@ -407,18 +395,19 @@ public abstract class AbstractRestClientService {
 			try {
 				mapper.writeValue(out, object);
 				return new String(out.toByteArray());
-			} catch (IOException var5) {
-				logger.error("Error when converting object to json.", var5);
+			} catch (IOException e) {
+				logger.error("Error when converting object to json.", e);
 				return null;
 			}
 		}
 	}
 
-	public void setTraversonUtil(TraversonUtil traversonUtil) {
-		this.traversonUtil = traversonUtil;
+	public DiscoveryClientUtil getDiscoveryClientUtil() {
+		return discoveryClientUtil;
 	}
 
-	public void setRestTemplate(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public void setDiscoveryClientUtil(DiscoveryClientUtil discoveryClientUtil) {
+		this.discoveryClientUtil = discoveryClientUtil;
 	}
+	
 }

@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 
 import com.ea.campus.ms.student.context.ExecutionContextAccessor;
 
-public abstract class AbstractRestClientServiceStudentMs extends AbstractRestClientService {
+public abstract class AbstractStudentMSRestClientService extends AbstractRestClientService {
 
 	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("header1", "header2");
 
@@ -49,7 +49,7 @@ public abstract class AbstractRestClientServiceStudentMs extends AbstractRestCli
 
 	@Override
 	protected String getLinkUrl(String service, String rel) {
-		return super.getLinkUrl(service, rel, Collections.emptyMap(), filterHeaders(getCurrentHeaders()));
+		return super.getLinkUrl(service, rel, filterHeaders(getCurrentHeaders()));
 	}
 
 	@Override
