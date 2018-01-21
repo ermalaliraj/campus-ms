@@ -262,7 +262,7 @@ public abstract class AbstractRestClientService {
 			watch.stop();
 			if (logger.isDebugEnabled()) {
 				logger.logMicroServiceCallDebug(url, method, convertObjectToJsonString(payload)
-						, responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : null
+						, responseEntity != null ? convertObjectToJsonString(responseEntity.getBody()) : ""
 						, watch.getTime()
 						, responseEntity != null ? responseEntity.getStatusCode() : null, parameters);
 			}
@@ -387,7 +387,7 @@ public abstract class AbstractRestClientService {
 
 	private String convertObjectToJsonString(Object object) {
 		if (object == null) {
-			return null;
+			return "{}";
 		} else {
 			ObjectMapper mapper = createMapper();
 			ByteArrayOutputStream out = new ByteArrayOutputStream();

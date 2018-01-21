@@ -25,8 +25,10 @@ import org.springframework.hateoas.client.Traverson.TraversalBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class DiscoveryClientUtil {
 	private static final Logger logger = LoggerFactory.getLogger(DiscoveryClientUtil.class);
 
