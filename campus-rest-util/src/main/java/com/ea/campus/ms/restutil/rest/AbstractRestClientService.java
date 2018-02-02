@@ -36,9 +36,9 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ea.campus.ms.restutil.context.MSLogger;
 import com.ea.campus.ms.restutil.discovery.DiscoveryClientUtil;
 import com.ea.campus.ms.restutil.exception.ErrorResource;
+import com.ea.campus.ms.restutil.logger.MSLogger;
 import com.ea.campus.ms.restutil.util.ObjectMapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
