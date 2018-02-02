@@ -26,10 +26,10 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-public class ObjectMapperUtils {
+public class ObjectMapperUtil {
 	
 	@SuppressWarnings("unused")
-	private static final transient Logger log = LoggerFactory.getLogger(ObjectMapperUtils.class);
+	private static final transient Logger log = LoggerFactory.getLogger(ObjectMapperUtil.class);
 	
 	public static Jackson2ObjectMapperBuilder objectMapperBuilder() {
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
@@ -38,7 +38,7 @@ public class ObjectMapperUtils {
 		SimpleModule module = new SimpleModule();
 		module.setDeserializerModifier(new BeanDeserializerModifier() {
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
-				return (JsonDeserializer<?>) (deserializer instanceof BeanDeserializer ? new ObjectMapperUtils.EmptyCollectionDeserializer(deserializer) : deserializer);
+				return (JsonDeserializer<?>) (deserializer instanceof BeanDeserializer ? new ObjectMapperUtil.EmptyCollectionDeserializer(deserializer) : deserializer);
 			}
 		});
 		builder.modules(module);
@@ -73,6 +73,7 @@ public class ObjectMapperUtils {
 		objectMapper.registerModule(module);
 	}
 
+	@SuppressWarnings("serial")
 	private static class EmptyCollectionDeserializer extends BeanDeserializer {
 		public EmptyCollectionDeserializer(JsonDeserializer<?> defaultDeserializer) {
 			super((BeanDeserializer) defaultDeserializer);

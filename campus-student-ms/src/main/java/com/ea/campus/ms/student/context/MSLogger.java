@@ -59,7 +59,7 @@ public class MSLogger implements Logger {
 		StringBuilder sb = new StringBuilder("url=").append(fullUrl);
 		sb.append("\t method=").append(method);
 		sb.append("\t status=").append((statusCode == null ? "unknown" : statusCode));
-		sb.append("\t total time=").append(elapsedTime);
+		sb.append("\t totalTime(ms)=").append(elapsedTime);
 
 		if (inputMessage != null) {
 			sb.append("\n   InputMessage : ").append(StringUtils.substring(inputMessage, 0, maxJsonLength));

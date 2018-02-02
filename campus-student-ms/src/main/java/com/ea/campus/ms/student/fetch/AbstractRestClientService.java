@@ -16,7 +16,6 @@ import org.apache.cxf.helpers.IOUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +39,7 @@ import org.springframework.web.client.RestTemplate;
 import com.ea.campus.ms.student.context.MSLogger;
 import com.ea.campus.ms.student.discovery.DiscoveryClientUtil;
 import com.ea.campus.ms.student.exception.ErrorResource;
-import com.ea.campus.ms.student.util.ObjectMapperUtils;
+import com.ea.campus.ms.student.util.ObjectMapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -80,28 +79,12 @@ public abstract class AbstractRestClientService {
 
 	public abstract HttpHeaders getCurrentHeaders();
 
-	protected ResponseEntity<Void> headEntity(String url, Object... parameters) {
-		return executeEntity(url, HttpMethod.HEAD, (HttpHeaders) null, (Object) null, Void.class, parameters);
-	}
-
-	protected ResponseEntity<Void> headEntity(String url, HttpHeaders headers, Object... parameters) {
-		return executeEntity(url, HttpMethod.HEAD, headers, (Object) null, Void.class, parameters);
-	}
-
 	protected <T> T get(String url, Class<T> responseType, Object... parameters) {
 		return execute(url, HttpMethod.GET, (HttpHeaders) null, (Object) null, responseType, parameters);
 	}
 
 	protected <T> T get(String url, HttpHeaders headers, Class<T> responseType, Object... parameters) {
 		return execute(url, HttpMethod.GET, headers, (Object) null, responseType, parameters);
-	}
-
-	protected <T> ResponseEntity<T> getEntity(String url, Class<T> responseType, Object... parameters) {
-		return executeEntity(url, HttpMethod.GET, (HttpHeaders) null, (Object) null, responseType, parameters);
-	}
-
-	protected <T> ResponseEntity<T> getEntity(String url, HttpHeaders headers, Class<T> responseType, Object... parameters) {
-		return executeEntity(url, HttpMethod.GET, headers, (Object) null, responseType, parameters);
 	}
 
 	protected <T> T post(String url, Object payload, Class<T> responseType, Object... parameters) {
@@ -112,20 +95,44 @@ public abstract class AbstractRestClientService {
 		return execute(url, HttpMethod.POST, headers, payload, responseType, parameters);
 	}
 
-	protected <T> ResponseEntity<T> postEntity(String url, Object payload, Class<T> responseType, Object... parameters) {
-		return executeEntity(url, HttpMethod.POST, (HttpHeaders) null, payload, responseType, parameters);
-	}
-
-	protected <T> ResponseEntity<T> postEntity(String url, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
-		return executeEntity(url, HttpMethod.POST, headers, payload, responseType, parameters);
-	}
-
 	protected <T> T put(String url, Object payload, Class<T> responseType, Object... parameters) {
 		return execute(url, HttpMethod.PUT, (HttpHeaders) null, payload, responseType, parameters);
 	}
 
 	protected <T> T put(String url, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
 		return execute(url, HttpMethod.PUT, headers, payload, responseType, parameters);
+	}
+
+	protected <T> T patch(String url, Object payload, Class<T> responseType, Object... parameters) {
+		return execute(url, HttpMethod.PATCH, (HttpHeaders) null, payload, responseType, parameters);
+	}
+
+	protected <T> T patch(String url, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
+		return execute(url, HttpMethod.PATCH, headers, payload, responseType, parameters);
+	}
+	
+	protected ResponseEntity<Void> headEntity(String url, Object... parameters) {
+		return executeEntity(url, HttpMethod.HEAD, (HttpHeaders) null, (Object) null, Void.class, parameters);
+	}
+
+	protected ResponseEntity<Void> headEntity(String url, HttpHeaders headers, Object... parameters) {
+		return executeEntity(url, HttpMethod.HEAD, headers, (Object) null, Void.class, parameters);
+	}	
+	
+	protected <T> ResponseEntity<T> getEntity(String url, Class<T> responseType, Object... parameters) {
+		return executeEntity(url, HttpMethod.GET, (HttpHeaders) null, (Object) null, responseType, parameters);
+	}
+
+	protected <T> ResponseEntity<T> getEntity(String url, HttpHeaders headers, Class<T> responseType, Object... parameters) {
+		return executeEntity(url, HttpMethod.GET, headers, (Object) null, responseType, parameters);
+	}
+	
+	protected <T> ResponseEntity<T> postEntity(String url, Object payload, Class<T> responseType, Object... parameters) {
+		return executeEntity(url, HttpMethod.POST, (HttpHeaders) null, payload, responseType, parameters);
+	}
+
+	protected <T> ResponseEntity<T> postEntity(String url, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
+		return executeEntity(url, HttpMethod.POST, headers, payload, responseType, parameters);
 	}
 
 	protected <T> ResponseEntity<T> putEntity(String url, Object payload, Class<T> responseType, Object... parameters) {
@@ -136,14 +143,6 @@ public abstract class AbstractRestClientService {
 		return executeEntity(url, HttpMethod.PUT, headers, payload, responseType, parameters);
 	}
 
-	protected <T> T patch(String url, Object payload, Class<T> responseType, Object... parameters) {
-		return execute(url, HttpMethod.PATCH, (HttpHeaders) null, payload, responseType, parameters);
-	}
-
-	protected <T> T patch(String url, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
-		return execute(url, HttpMethod.PATCH, headers, payload, responseType, parameters);
-	}
-
 	protected <T> ResponseEntity<T> patchEntity(String url, Object payload, Class<T> responseType, Object... parameters) {
 		return executeEntity(url, HttpMethod.PATCH, (HttpHeaders) null, payload, responseType, parameters);
 	}
@@ -152,16 +151,16 @@ public abstract class AbstractRestClientService {
 		return executeEntity(url, HttpMethod.PATCH, headers, payload, responseType, parameters);
 	}
 
-	<T> T execute(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
+	protected <T> T execute(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
 		ResponseEntity<T> responseEntity = executeEntity(url, method, headers, payload, responseType, parameters);
 		return responseEntity.getBody();
 	}
-
-	<T> ResponseEntity<T> executeEntity(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
-		return executeEntityObject(url, method, headers, payload, responseType, parameters);
+	
+	protected <T> ResponseEntity<T> executeEntity(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
+		return executeEntityLogic(url, method, headers, payload, responseType, parameters);
 	}
 
-	<T> ResponseEntity<T> executeEntityObject(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
+	protected <T> ResponseEntity<T> executeEntityLogic(String url, HttpMethod method, HttpHeaders headers, Object payload, Class<T> responseType, Object... parameters) {
 		StopWatch watch = new StopWatch();
 		watch.start();
 		HttpEntity<Object> requestEntity = new HttpEntity<Object>(payload, headers);
@@ -192,57 +191,21 @@ public abstract class AbstractRestClientService {
 			throw e;
 		}
 	}
-
-	public ErrorResource extractErrorResource(RestClientException e) throws IOException {
-		return e instanceof HttpClientErrorException
-				? ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpClientErrorException) e).getResponseBodyAsString(), ErrorResource.class)
-				: ObjectMapperUtils.getDefaultObjectMapper().readValue(((HttpServerErrorException) e).getResponseBodyAsString(), ErrorResource.class);
-	}
-
-	public boolean checkService(String service) {
-		ClientHttpResponse httpResponse = null;
-		boolean rv = false;
-		try {
-			try {
-				String url = getLinkUrl(service);
-				if (url == null) {
-					return false;
-				}
-
-				url = url + "/health";
-				httpResponse = httpExecute(HttpMethod.GET, url, (Map<String, String>) null);
-				String response = IOUtils.toString(httpResponse.getBody());
-				Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider());
-				ReadContext context = JsonPath.parse(response, configuration);
-				String status = context.read("$.status.status", String.class, new Predicate[0]);
-				rv = status != null && status.equals("UP");
-			} catch (URISyntaxException | IOException var12) {
-				rv = false;
-			}
-		} finally {
-			if (httpResponse != null) {
-				httpResponse.close();
-			}
-		}
-		return rv;
-	}
-
+	
 	protected ClientHttpResponse httpGet(String service, String rel, Map<String, Object> params, Map<String, String> headersMap) throws URISyntaxException, IOException {
 		if (params == null) {
 			params = new HashMap<>();
 		}
-
 		String url;
 		if (CollectionUtils.isEmpty((Map<String, Object>) params)) {
 			url = getLinkUrl(service, rel);
 		} else {
 			url = getLinkUrl(service, rel, (Map<String, Object>) params);
 		}
-
 		return httpExecute(HttpMethod.GET, url, headersMap);
 	}
 
-	ClientHttpResponse httpExecute(HttpMethod method, String url, Map<String, String> headersMap) throws URISyntaxException, IOException {
+	private ClientHttpResponse httpExecute(HttpMethod method, String url, Map<String, String> headersMap) throws URISyntaxException, IOException {
 		DateTime dateTime = new DateTime();
 		URI uri = new URI(url);
 		AbstractClientHttpRequest httpRequest = (AbstractClientHttpRequest) requestFactory.createRequest(uri, method);
@@ -275,7 +238,7 @@ public abstract class AbstractRestClientService {
 		return discoveryClientUtil.getLinkUrl(service, rel, params);
 	}
 	
-	public String getLinkUrl(String service, String rel, HttpHeaders filterHeaders) {
+	protected String getLinkUrl(String service, String rel, HttpHeaders filterHeaders) {
 		return discoveryClientUtil.getLinkUrl(service, rel, filterHeaders);
 	}
 
@@ -288,7 +251,7 @@ public abstract class AbstractRestClientService {
 	}
 
 	protected ObjectMapper createMapper() {
-		return ObjectMapperUtils.getDefaultObjectMapper();
+		return ObjectMapperUtil.getDefaultObjectMapper();
 	}
 
 	protected List<HttpMessageConverter<?>> getMessageConverters() {
@@ -315,6 +278,12 @@ public abstract class AbstractRestClientService {
 				return null;
 			}
 		}
+	}
+	
+	public ErrorResource extractErrorResource(RestClientException e) throws IOException {
+		return e instanceof HttpClientErrorException
+				? ObjectMapperUtil.getDefaultObjectMapper().readValue(((HttpClientErrorException) e).getResponseBodyAsString(), ErrorResource.class)
+				: ObjectMapperUtil.getDefaultObjectMapper().readValue(((HttpServerErrorException) e).getResponseBodyAsString(), ErrorResource.class);
 	}
 
 	public DiscoveryClientUtil getDiscoveryClientUtil() {

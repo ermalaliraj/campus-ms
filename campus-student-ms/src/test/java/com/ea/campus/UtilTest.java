@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ea.campus.ms.student.dto.PaymentType;
 import com.ea.campus.ms.student.dto.StudentDTO;
-import com.ea.campus.ms.student.util.ObjectMapperUtils;
+import com.ea.campus.ms.student.util.ObjectMapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,7 +23,7 @@ public class UtilTest {
 	public void mapper() {
 		
 		Object object = new StudentDTO("1", "ermal", "aliraj", "DevOps", PaymentType.NEUTRAL);
-		ObjectMapper mapper = ObjectMapperUtils.getDefaultObjectMapper();
+		ObjectMapper mapper = ObjectMapperUtil.getDefaultObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		String str = null;
