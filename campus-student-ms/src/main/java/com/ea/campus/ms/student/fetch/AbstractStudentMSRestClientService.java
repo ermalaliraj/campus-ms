@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 
-import com.ea.campus.ms.student.context.ExecutionContextAccessor;
+import com.ea.campus.ms.restutil.context.ExecutionContextAccessor;
+import com.ea.campus.ms.restutil.rest.AbstractRestClientService;
 
 public abstract class AbstractStudentMSRestClientService extends AbstractRestClientService {
 

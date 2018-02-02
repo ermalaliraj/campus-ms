@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.context;
+package com.ea.campus.ms.restutil.context;
 
 public interface ExecutionContextStrategy {
 	/**

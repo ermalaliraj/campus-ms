@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ea.campus</groupId>
-	<artifactId>campus-student-ms</artifactId>
+	<artifactId>campus-rest-util</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -56,13 +56,6 @@
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.ea.campus</groupId>
-			<artifactId>campus-rest-util</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		
 
 		<!-- Test -->
 		<dependency>
@@ -70,15 +63,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-
-
-
-
-
 
 
 		<!-- SPRING CLOUD -->

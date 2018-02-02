@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.context;
+package com.ea.campus.ms.restutil.context;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

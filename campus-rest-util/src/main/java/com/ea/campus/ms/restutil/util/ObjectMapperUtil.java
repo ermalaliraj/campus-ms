@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.util;
+package com.ea.campus.ms.restutil.util;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import com.ea.campus.ms.restutil.exception.StubFileException;
+import com.ea.campus.ms.restutil.util.StubFileReader;
 import com.ea.campus.ms.student.dto.PaymentType;
 import com.ea.campus.ms.student.dto.external.PaymentTypeDTO;
-import com.ea.campus.ms.student.util.StubFileReader;
-import com.ea.campus.ms.student.util.StubFileException;
 
 @Service
 @ConditionalOnProperty(name = "stub.payment-ms", havingValue = "true")

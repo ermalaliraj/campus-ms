@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.discovery;
+package com.ea.campus.ms.restutil.discovery;
 
 public class ServerInstanceNotFoundException extends RuntimeException {
 	

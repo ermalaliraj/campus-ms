@@ -1,10 +1,11 @@
-package com.ea.campus.ms.student.util;
+package com.ea.campus.ms.restutil.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.cxf.helpers.IOUtils;
 
+import com.ea.campus.ms.restutil.exception.StubFileException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class StubFileReader {

@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.fetch;
+package com.ea.campus.ms.restutil.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,16 +36,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ea.campus.ms.student.context.MSLogger;
-import com.ea.campus.ms.student.discovery.DiscoveryClientUtil;
-import com.ea.campus.ms.student.exception.ErrorResource;
-import com.ea.campus.ms.student.util.ObjectMapperUtil;
+import com.ea.campus.ms.restutil.context.MSLogger;
+import com.ea.campus.ms.restutil.discovery.DiscoveryClientUtil;
+import com.ea.campus.ms.restutil.exception.ErrorResource;
+import com.ea.campus.ms.restutil.util.ObjectMapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.Predicate;
-import com.jayway.jsonpath.ReadContext;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 @Service
 public abstract class AbstractRestClientService {

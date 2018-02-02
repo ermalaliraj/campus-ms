@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.exception;
+package com.ea.campus.ms.restutil.exception;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.hateoas.ResourceSupport;
 
-import com.ea.campus.ms.student.context.EmbeddedResourceSupport;
+import com.ea.campus.ms.restutil.context.EmbeddedResourceSupport;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ea.campus.ms.restutil.util.ObjectMapperUtil;
 import com.ea.campus.ms.student.dto.PaymentType;
 import com.ea.campus.ms.student.dto.StudentDTO;
-import com.ea.campus.ms.student.util.ObjectMapperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)

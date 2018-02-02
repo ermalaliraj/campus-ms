@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.exception;
+package com.ea.campus.ms.restutil.exception;
 
 public class TechnicalException extends RuntimeException{
 

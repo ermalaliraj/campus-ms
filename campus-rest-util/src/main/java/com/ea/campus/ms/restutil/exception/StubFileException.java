@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.util;
+package com.ea.campus.ms.restutil.exception;
 
 public class StubFileException extends Exception {
 
