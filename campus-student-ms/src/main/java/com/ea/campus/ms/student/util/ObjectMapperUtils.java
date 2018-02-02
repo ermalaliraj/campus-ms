@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class ObjectMapperUtils {
 	
+	@SuppressWarnings("unused")
 	private static final transient Logger log = LoggerFactory.getLogger(ObjectMapperUtils.class);
 	
 	public static Jackson2ObjectMapperBuilder objectMapperBuilder() {
@@ -37,7 +38,7 @@ public class ObjectMapperUtils {
 		SimpleModule module = new SimpleModule();
 		module.setDeserializerModifier(new BeanDeserializerModifier() {
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
-				return (JsonDeserializer) (deserializer instanceof BeanDeserializer ? new ObjectMapperUtils.EmptyCollectionDeserializer(deserializer) : deserializer);
+				return (JsonDeserializer<?>) (deserializer instanceof BeanDeserializer ? new ObjectMapperUtils.EmptyCollectionDeserializer(deserializer) : deserializer);
 			}
 		});
 		builder.modules(module);
@@ -78,10 +79,7 @@ public class ObjectMapperUtils {
 		}
 
 		@Override
-		public Object deserialize(JsonParser jp, DeserializationContext context)
-				throws IOException {
-			log.debug("jp:"+ jp);
-			log.debug("context: "+context);
+		public Object deserialize(JsonParser jp, DeserializationContext context) throws IOException {
 			final Object bean = super.deserialize(jp, context);
 
 			ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
@@ -92,7 +90,7 @@ public class ObjectMapperUtils {
 						if (List.class.equals(field.getType())) {
 							field.set(bean, new ArrayList<>());
 						} else if (Map.class.equals(field.getType())) {
-							field.set(bean, new HashMap());
+							field.set(bean, new HashMap<>());
 						} else if (Set.class.equals(field.getType())) {
 							field.set(bean, new HashSet<>());
 						}

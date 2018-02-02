@@ -8,29 +8,35 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
-import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.core.AnnotationAttribute;
 import org.springframework.hateoas.core.AnnotationMappingDiscoverer;
-import org.springframework.hateoas.core.MappingDiscoverer;
-import org.springframework.hateoas.core.MethodParameters;
 import org.springframework.hateoas.core.DummyInvocationUtils.LastInvocationAware;
 import org.springframework.hateoas.core.DummyInvocationUtils.MethodInvocation;
+import org.springframework.hateoas.core.MappingDiscoverer;
+import org.springframework.hateoas.core.MethodParameters;
 import org.springframework.hateoas.mvc.AnnotatedParametersParameterAccessor.BoundMethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Re-write ControllerLinkBuilder.
+ * The actual implementation throws NullPointerException when calling a method will parameters as null.
+ * Same package is used since ControllerLinkBuilder constructors has package visibility. 
+ */
 public class ParameterizedControllerLinkBuilder extends ControllerLinkBuilder {
-	protected static final MappingDiscoverer DISCOVERER = new AnnotationMappingDiscoverer(RequestMapping.class);
-	protected static final AnnotatedParametersParameterAccessor REQUEST_PARAM_ACCESSOR = new ParameterizedControllerLinkBuilder.RequestParamParameterAccessor();
+	protected static final MappingDiscoverer DISCOVERER = new AnnotationMappingDiscoverer(RequestMapping.class);//same
+	protected static final AnnotatedParametersParameterAccessor REQUEST_PARAM_ACCESSOR = new ParameterizedControllerLinkBuilder.RequestParamParameterAccessor();//rewrite
 	private final UriComponentsBuilder builder;
-	private List<TemplateVariable> optionalParameters = new ArrayList();
+	private List<TemplateVariable> optionalParameters = new ArrayList<TemplateVariable>();
 
 	public ParameterizedControllerLinkBuilder(UriComponentsBuilder builder) {
 		super(builder);
@@ -44,7 +50,7 @@ public class ParameterizedControllerLinkBuilder extends ControllerLinkBuilder {
 	}
 
 	public static ControllerLinkBuilder linkTo(Object invocationValue) {
-		List<TemplateVariable> optionalParameters = new ArrayList();
+		List<TemplateVariable> optionalParameters = new ArrayList<TemplateVariable>();
 		Assert.isInstanceOf(LastInvocationAware.class, invocationValue);
 		LastInvocationAware invocations = (LastInvocationAware) invocationValue;
 		MethodInvocation invocation = invocations.getLastInvocation();
@@ -62,26 +68,25 @@ public class ParameterizedControllerLinkBuilder extends ControllerLinkBuilder {
 	}
 
 	public static boolean typeOf(Class<?> clazz, Class<?> expected) {
-		Assert.notNull(clazz);
-		Assert.notNull(expected);
+		Assert.notNull(clazz, "Parameter type to compare can not be null");
+		Assert.notNull(expected, "Parameter type expected can not be null");
 		if (clazz.equals(expected)) {
 			return true;
 		} else {
-			Class[] var3 = clazz.getInterfaces();
-			int var4 = var3.length;
-
-			for (int var5 = 0; var5 < var4; ++var5) {
-				Class<?> i = var3[var5];
-				if (i.equals(expected)) {
+			// check interfaces
+			Class<?>[] interfaces = clazz.getInterfaces();
+			for (int i = 0; i < interfaces.length; ++i) {
+				Class<?> interfaceI = interfaces[i];
+				if (interfaceI.equals(expected)) {
 					return true;
 				}
 
-				boolean found = typeOf(i, expected);
-				if (found) {
+				if (typeOf(interfaceI, expected)) {
 					return true;
 				}
 			}
 
+			// check super class
 			Class<?> s = clazz.getSuperclass();
 			if (s != null) {
 				if (s.equals(expected)) {
@@ -100,26 +105,27 @@ public class ParameterizedControllerLinkBuilder extends ControllerLinkBuilder {
 		Object value = parameter.getValue();
 		String key = parameter.getVariableName();
 		Class<?> parameterType = parameter.getParameter().getParameterType();
-		RequestParam annotation = (RequestParam) parameter.getParameter().getParameterAnnotation(RequestParam.class);
+		RequestParam annotation = parameter.getParameter().getParameterAnnotation(RequestParam.class);
 		if (typeOf(parameterType, Map.class)) {
-			Map<String, Object> requestParams = (Map) value;
-			Iterator var8;
-			String k;
+			@SuppressWarnings("unchecked")
+			Map<String, Object> requestParams = (Map<String, Object>) value;
+			Iterator<String> iterator;
+			String mapValue;
 			if (annotation.required()) {
-				var8 = requestParams.keySet().iterator();
+				iterator = requestParams.keySet().iterator();
 
-				while (var8.hasNext()) {
-					k = (String) var8.next();
-					builder.queryParam(k, new Object[] { "{" + k + "}" });
+				while (iterator.hasNext()) {
+					mapValue = iterator.next();
+					builder.queryParam(mapValue, new Object[] { "{" + mapValue + "}" });
 				}
 			} else {
-				var8 = requestParams.keySet().iterator();
+				iterator = requestParams.keySet().iterator();
 
-				while (var8.hasNext()) {
-					k = (String) var8.next();
+				while (iterator.hasNext()) {
+					mapValue = iterator.next();
 					boolean append = !optionalParameters.isEmpty();
 					VariableType type = append ? VariableType.REQUEST_PARAM_CONTINUED : VariableType.REQUEST_PARAM;
-					optionalParameters.add(new TemplateVariable(k, type));
+					optionalParameters.add(new TemplateVariable(mapValue, type));
 				}
 			}
 		} else {
@@ -198,11 +204,11 @@ public class ParameterizedControllerLinkBuilder extends ControllerLinkBuilder {
 			Assert.notNull(invocation, "MethodInvocation must not be null!");
 			MethodParameters parameters = new MethodParameters(invocation.getMethod());
 			Object[] arguments = invocation.getArguments();
-			List<BoundMethodParameter> result = new ArrayList();
-			Iterator var5 = parameters.getParametersWith(this.attribute.getAnnotationType()).iterator();
+			List<BoundMethodParameter> result = new ArrayList<BoundMethodParameter>();
+			Iterator<MethodParameter> iterator = parameters.getParametersWith(this.attribute.getAnnotationType()).iterator();
 
-			while (var5.hasNext()) {
-				MethodParameter parameter = (MethodParameter) var5.next();
+			while (iterator.hasNext()) {
+				MethodParameter parameter = (MethodParameter) iterator.next();
 				Object value = arguments[parameter.getParameterIndex()];
 				Object verifiedValue = this.verifyParameterValue(parameter, value);
 				if (verifiedValue != null) {

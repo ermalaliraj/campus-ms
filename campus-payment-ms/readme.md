@@ -15,5 +15,6 @@
 * [Benefit of hypermedia in APIs](http://soabits.blogspot.be/2013/12/selling-benefits-of-hypermedia.html) Benefit of hypermedia in APIs (Links)
 * [Client Side Load Balancing with Ribbon](https://spring.io/guides/gs/client-side-load-balancing/) Spring doc
 * [Eureka](https://spring.io/guides/gs/service-registration-and-discovery/) Spring doc 
+* [Eureka Cloud](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html)
 * [RestTemplate](https://spring.io/blog/2009/03/27/rest-in-spring-3-resttemplate) Spring doc
 

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ea.campus.ms.payment.assembler.PaymentStudentAssembler;
@@ -43,8 +42,8 @@ public class PaymentController {
 		return ResponseEntity.ok().body(paymentsStudents);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/student")
-	public ResponseEntity<PaymentStudentEntity> getPaymentForStudent(@RequestParam(value = "id") String id) {
+	@RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
+	public ResponseEntity<PaymentStudentEntity> getPaymentForStudent(@PathVariable String id) {
 		PaymentStudentEntity ret = paymentService.getPaymentStudent(id);
 		log.info("For id: '" + id + "', found in DB: " + ret);
 		return ResponseEntity.ok().body(ret);
