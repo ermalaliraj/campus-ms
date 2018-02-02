@@ -76,7 +76,7 @@ public class DiscoveryClientUtil {
 		String url = getDirectUrlIfPresent(serviceId);
 		if (url != null) {
 			if (rel != null) {
-				logger.debug("Using Traverson with configured URL: " + url + ".");
+				logger.debug("Using Traverson with configured URL: " + url);
 				return fixTripleEncoding(getLink(getTraversonFromURL(url), rel, params, (HttpHeaders) headers).getHref());
 			} else {
 				logger.debug("Returning configured URL: " + url + ".");
