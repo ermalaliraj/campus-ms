@@ -1,20 +1,22 @@
 package com.ea.campus.ms.student.service.fetch;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 
-import com.ea.campus.ms.restutil.context.ExecutionContextAccessor;
-import com.ea.campus.ms.restutil.context.ServiceExecutionContext;
+//import com.ea.campus.ms.restutil.context.ExecutionContextAccessor;
+//import com.ea.campus.ms.restutil.context.ServiceExecutionContext;
 import com.ea.campus.ms.restutil.rest.AbstractRestClientService;
 
 public abstract class AbstractStudentMSRestClientService extends AbstractRestClientService {
 
 	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("header1", "header2");
-	private ServiceExecutionContext serviceExecutionContext = ExecutionContextAccessor.getExecutionContext();
+	//Use security context TODO for now simple flow.
+	//private ServiceExecutionContext serviceExecutionContext = ExecutionContextAccessor.getExecutionContext();
 
 	@Override
 	protected String microservicePropertyName() {
@@ -27,7 +29,8 @@ public abstract class AbstractStudentMSRestClientService extends AbstractRestCli
 	@Override
 	public HttpHeaders getCurrentHeaders() {
 		HttpHeaders currentHeaders = new HttpHeaders();
-		Map<String, String> headers = serviceExecutionContext.getHeaders();
+		//Map<String, String> headers = serviceExecutionContext.getHeaders();
+		Map<String, String> headers = Collections.emptyMap();
 		for (Map.Entry<String, String> header : headers.entrySet()) {
 			currentHeaders.add(header.getKey(), header.getValue());
 		}
