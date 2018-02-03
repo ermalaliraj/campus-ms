@@ -8,38 +8,48 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 
 import com.ea.campus.ms.restutil.context.ExecutionContextAccessor;
+import com.ea.campus.ms.restutil.context.ServiceExecutionContext;
 import com.ea.campus.ms.restutil.rest.AbstractRestClientService;
 
 public abstract class AbstractStudentMSRestClientService extends AbstractRestClientService {
 
 	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("header1", "header2");
+	
+	private ServiceExecutionContext serviceExecutionContext = ExecutionContextAccessor.getExecutionContext();
 
 	@Override
 	protected String microservicePropertyName() {
 		return "student-ms";
 	}
 
+	/**
+	 * Get from the context the headers present.
+	 */
 	@Override
 	public HttpHeaders getCurrentHeaders() {
 		HttpHeaders currentHeaders = new HttpHeaders();
-		Map<String, String> headers = ExecutionContextAccessor.getExecutionContext().getHeaders();
+		Map<String, String> headers = serviceExecutionContext.getHeaders();
 		for (Map.Entry<String, String> header : headers.entrySet()) {
 			currentHeaders.add(header.getKey(), header.getValue());
 		}
 		return currentHeaders;
 	}
 
+	/**
+	 * Filter the headers keeping only the ones present in HEADERS_TO_KEEP
+	 * @return Filtered Headers
+	 */
 	public static HttpHeaders filterHeaders(HttpHeaders httpHeaders) {
 		if (httpHeaders == null) {
 			return null;
 		}
-		HttpHeaders forwardedHeaders = new HttpHeaders();
+		HttpHeaders filteredHeaders = new HttpHeaders();
 		for (String key : httpHeaders.keySet()) {
 			if (HEADERS_TO_KEEP.contains(key.toLowerCase())) {
-				forwardedHeaders.add(key, httpHeaders.getFirst(key));
+				filteredHeaders.add(key, httpHeaders.getFirst(key));
 			}
 		}
-		return forwardedHeaders;
+		return filteredHeaders;
 	}
 
 	@Override
