@@ -2,7 +2,7 @@ package com.ea.campus.ms.restutil.context;
 
 public class ThreadLocalExecutionContext implements ExecutionContextStrategy {
 
-	private static final ThreadLocal<ServiceExecutionContext> EXECUTION_CONTEXT = ThreadLocal.withInitial(ServiceExecutionContext::new);
+	private static final ThreadLocal<ServiceExecutionContext> EXECUTION_CONTEXT = ThreadLocal.withInitial(() -> new ServiceExecutionContext());
 
 	@Override
 	public ServiceExecutionContext getContext() {

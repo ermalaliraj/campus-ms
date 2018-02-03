@@ -1,7 +1,7 @@
 package com.ea.campus.ms.payment.controller;
 
-import static org.springframework.hateoas.mvc.ParameterizedControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.mvc.ParameterizedControllerLinkBuilder.linkTo;
 import static org.springframework.http.ResponseEntity.ok;
 
 import org.springframework.hateoas.Link;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ea.campus.ms.payment.config.PaymentResourceSupport;
 import com.ea.campus.ms.payment.constants.Curie;
-import com.ea.campus.ms.payment.context.PaymentResourceSupport;
 
 /**
  * Main {@link RestController}.

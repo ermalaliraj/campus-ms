@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.service;
+package com.ea.campus.ms.student.service.fetch;
 
 import com.ea.campus.ms.student.dto.external.PaymentTypeDTO;
 

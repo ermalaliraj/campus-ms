@@ -1,4 +1,4 @@
-package com.ea.campus.ms.payment.context;
+package com.ea.campus.ms.payment.config;
 
 import org.springframework.hateoas.ResourceSupport;
 

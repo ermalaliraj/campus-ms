@@ -13,6 +13,7 @@ import com.ea.campus.ms.student.dto.StudentDTO;
 import com.ea.campus.ms.student.dto.external.PaymentTypeDTO;
 import com.ea.campus.ms.student.entity.StudentEntity;
 import com.ea.campus.ms.student.repository.StudentRepository;
+import com.ea.campus.ms.student.service.fetch.PaymentFetchService;
 
 @Service
 public class StudentServiceImpl implements StudentService {

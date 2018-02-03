@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.fetch;
+package com.ea.campus.ms.student.service.fetch;
 
 import java.util.Arrays;
 import java.util.List;

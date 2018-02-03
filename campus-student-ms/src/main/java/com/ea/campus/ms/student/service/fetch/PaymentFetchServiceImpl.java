@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.service;
+package com.ea.campus.ms.student.service.fetch;
 
 import static com.ea.campus.ms.student.dto.external.CurieExternal.PAYMENT_SERVICE;
 import static com.ea.campus.ms.student.dto.external.CurieExternal.PAYMENT_FOR_STUDENT_CURIE;
@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.ea.campus.ms.student.dto.external.PaymentTypeDTO;
-import com.ea.campus.ms.student.fetch.AbstractStudentMSRestClientService;
 
 @Service
 @ConditionalOnProperty(name = "stub.payment-ms", havingValue = "false", matchIfMissing = true)

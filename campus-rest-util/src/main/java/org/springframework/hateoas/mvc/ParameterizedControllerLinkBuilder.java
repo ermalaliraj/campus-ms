@@ -21,6 +21,8 @@ import org.springframework.hateoas.core.DummyInvocationUtils.LastInvocationAware
 import org.springframework.hateoas.core.DummyInvocationUtils.MethodInvocation;
 import org.springframework.hateoas.core.MappingDiscoverer;
 import org.springframework.hateoas.core.MethodParameters;
+import org.springframework.hateoas.mvc.AnnotatedParametersParameterAccessor;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.hateoas.mvc.AnnotatedParametersParameterAccessor.BoundMethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;

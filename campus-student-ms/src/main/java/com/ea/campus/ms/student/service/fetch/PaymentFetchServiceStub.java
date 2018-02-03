@@ -1,4 +1,4 @@
-package com.ea.campus.ms.student.service;
+package com.ea.campus.ms.student.service.fetch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
