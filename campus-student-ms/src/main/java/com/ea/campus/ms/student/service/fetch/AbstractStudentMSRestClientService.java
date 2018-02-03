@@ -14,7 +14,6 @@ import com.ea.campus.ms.restutil.rest.AbstractRestClientService;
 public abstract class AbstractStudentMSRestClientService extends AbstractRestClientService {
 
 	private static final List<String> HEADERS_TO_KEEP = Arrays.asList("header1", "header2");
-	
 	private ServiceExecutionContext serviceExecutionContext = ExecutionContextAccessor.getExecutionContext();
 
 	@Override
@@ -23,7 +22,7 @@ public abstract class AbstractStudentMSRestClientService extends AbstractRestCli
 	}
 
 	/**
-	 * Get from the context the headers present.
+	 * Get the actual Headers present in the context.
 	 */
 	@Override
 	public HttpHeaders getCurrentHeaders() {

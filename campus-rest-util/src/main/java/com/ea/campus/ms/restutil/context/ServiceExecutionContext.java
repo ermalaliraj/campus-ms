@@ -3,6 +3,8 @@ package com.ea.campus.ms.restutil.context;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ea.campus.ms.restutil.security.SecurityState;
+
 public class ServiceExecutionContext {
 
 	private Map<String, String> headers = new HashMap<>();
