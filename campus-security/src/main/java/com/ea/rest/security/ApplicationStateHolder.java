@@ -8,14 +8,20 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Keep a map of the classes present to handle specific headers. 
+ */
 @Component
 public class ApplicationStateHolder {
+	private static final Logger log = LoggerFactory.getLogger(ApplicationStateHolder.class);
 	private Map<String, Pair<String, String>> applicationStates = new HashMap<>();
 
 	@PostConstruct
@@ -32,6 +38,8 @@ public class ApplicationStateHolder {
 			} catch (ClassNotFoundException localClassNotFoundException) {
 			}
 			String className = bd.getBeanClassName();
+
+			log.info("Adding in applicationStates for header: " + headerName + ", securityName: " + securityName + ", class: " + className + ")");
 			this.applicationStates.put(headerName, new ImmutablePair<String, String>(securityName, className));
 		}
 	}

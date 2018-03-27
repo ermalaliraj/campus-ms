@@ -25,7 +25,7 @@ public class PaymentFetchServiceStub implements PaymentFetchService {
 			log.info("PaymentTypeDTO for student id: " + id + " is " + dto);
 		} catch (StubFileException e) {
 			log.error("Error reading payment-stub for student id: " + id + ", returning the default value PaymentType.NEUTRAL");
-			dto = new PaymentTypeDTO(PaymentType.NEUTRAL);
+			dto = new PaymentTypeDTO(PaymentType.UNKNOWN);
 		}
 		return dto;
 	}

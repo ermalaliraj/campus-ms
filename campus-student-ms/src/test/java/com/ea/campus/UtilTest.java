@@ -22,7 +22,7 @@ public class UtilTest {
 	@Test
 	public void mapper() {
 		
-		Object object = new StudentDTO("1", "ermal", "aliraj", "DevOps", PaymentType.NEUTRAL);
+		Object object = new StudentDTO("1", "ermal", "aliraj", "DevOps", PaymentType.UNKNOWN);
 		ObjectMapper mapper = ObjectMapperUtil.getDefaultObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 

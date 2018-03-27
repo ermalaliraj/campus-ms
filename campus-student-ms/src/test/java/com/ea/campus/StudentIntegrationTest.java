@@ -68,7 +68,7 @@ public class StudentIntegrationTest {
 		then(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 		then(resp.getBody()).isNotNull();
 		then(((StudentDTO) resp.getBody()).getName()).isEqualTo(studentName);
-		then(((StudentDTO) resp.getBody()).getPaymentType()).isEqualTo(PaymentType.NEUTRAL);
+		then(((StudentDTO) resp.getBody()).getPaymentType()).isEqualTo(PaymentType.UNKNOWN);
 	}
 
 	@Test

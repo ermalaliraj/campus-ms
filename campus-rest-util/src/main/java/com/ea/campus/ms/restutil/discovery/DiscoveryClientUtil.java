@@ -38,9 +38,9 @@ public class DiscoveryClientUtil {
 	private Environment env;
 	private RestTemplate restTemplate;
 
-	@Value("${discovery.connectTimeout:1000}")
+	@Value("${discovery.connectTimeout:10000}")
 	private int connectTimeout;
-	@Value("${discovery.readTimeout:5000}")
+	@Value("${discovery.readTimeout:50000}")
 	private int readTimeout;
 
 	public DiscoveryClientUtil() {
@@ -62,11 +62,11 @@ public class DiscoveryClientUtil {
 	public String getLinkUrl(String serviceId, String rel) {
 		return getLinkUrl(serviceId, rel, new HashMap<String, Object>());
 	}
-	
+
 	public String getLinkUrl(String serviceId, String rel, Map<String, Object> params) {
 		return getLinkUrl(serviceId, rel, params, null);
 	}
-	
+
 	public String getLinkUrl(String service, String rel, HttpHeaders filterHeaders) {
 		return getLinkUrl(service, rel, Collections.emptyMap(), filterHeaders);
 	}
@@ -84,10 +84,10 @@ public class DiscoveryClientUtil {
 			}
 		} else {
 			if (rel != null) {
-				logger.debug("Using Traverson with URL fetched from Eureka.");
+				logger.debug("Using Traverson with URL fetched from Eureka for service " + serviceId);
 				return fixTripleEncoding(getLink(getTraverson(serviceId), rel, params, (HttpHeaders) headers).getHref());
 			} else {
-				logger.debug("Getting URL from Eureka.");
+				logger.debug("Getting URL from Eureka for service " + serviceId);
 				return fixTripleEncoding(getServiceUrl(serviceId).toString());
 			}
 		}
@@ -96,7 +96,7 @@ public class DiscoveryClientUtil {
 	private String getDirectUrlIfPresent(String serviceId) {
 		return env.getProperty("rest." + serviceId + ".url");
 	}
-	
+
 	private String fixTripleEncoding(String url) {
 		if (url == null) {
 			return null;
@@ -109,7 +109,7 @@ public class DiscoveryClientUtil {
 			}
 		}
 	}
-	
+
 	private Link getLink(Traverson traverson, String rel, Map<String, ? extends Object> arguments, HttpHeaders headers) {
 		TraversalBuilder tb = traverson.follow(new String[] { rel });
 		if (headers != null) {
@@ -117,17 +117,17 @@ public class DiscoveryClientUtil {
 		}
 		return tb.asTemplatedLink().expand(arguments);
 	}
-	
+
 	public Traverson getTraverson(String serviceId) {
 		return getTraversonFromURI(getServiceUrl(serviceId));
 	}
-	
+
 	public Traverson getTraversonFromURI(URI uri) {
 		Traverson traverson = new Traverson(uri, new MediaType[] { MediaTypes.HAL_JSON });
 		traverson.setRestOperations(restTemplate);
 		return traverson;
-	}	
-	
+	}
+
 	public URI getServiceUrl(String serviceId) {
 		ServiceInstance instance = loadBalancer.choose(serviceId);
 		if (instance == null) {

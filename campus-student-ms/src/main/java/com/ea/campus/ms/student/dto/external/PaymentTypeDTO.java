@@ -15,7 +15,7 @@ public class PaymentTypeDTO implements Serializable {
 	private PaymentType paymentType;
 
 	public PaymentTypeDTO() {
-		this.paymentType = PaymentType.NEUTRAL;
+		this.paymentType = PaymentType.UNKNOWN;
 	}
 	public PaymentTypeDTO(PaymentType paymentType) {
 		this.paymentType = paymentType;

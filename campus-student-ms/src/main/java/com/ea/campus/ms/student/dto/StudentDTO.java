@@ -28,14 +28,14 @@ public class StudentDTO implements Serializable {
 //		}
 	}
 	public StudentDTO(String id, String name, String surname, String jobTitle) {
-		this(null, name, surname, jobTitle, PaymentType.NEUTRAL);
+		this(null, name, surname, jobTitle, PaymentType.UNKNOWN);
 	}
 	
 	public StudentDTO(String name, String surname, PaymentType paymentType) {
 		this(null, name, surname, null, paymentType);
 	}
 	public StudentDTO(String name, String surname) {
-		this(null, name, surname, null, PaymentType.NEUTRAL);
+		this(null, name, surname, null, PaymentType.UNKNOWN);
 	}
 
 	public String getId() {

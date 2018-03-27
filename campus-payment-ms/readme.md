@@ -17,4 +17,6 @@
 * [Eureka](https://spring.io/guides/gs/service-registration-and-discovery/) Spring doc 
 * [Eureka Cloud](https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html)
 * [RestTemplate](https://spring.io/blog/2009/03/27/rest-in-spring-3-resttemplate) Spring doc
+* [Hystrix] (https://github.com/Netflix/Hystrix/wiki/How-it-Works)
+* [Hystrix-Circuit Breaker] (http://www.baeldung.com/spring-cloud-netflix-hystrix)
 
