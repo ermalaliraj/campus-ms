@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ea.campus.ms.course.courses.CourseEntity;
+import com.ea.campus.ms.course.courses.CourseDTO;
 import com.ea.campus.ms.course.courses.CourseService;
 import com.ea.campus.ms.course.exception.TopicAssociatedToCourseException;
-import com.ea.campus.ms.course.topics.TopicEntity;
+import com.ea.campus.ms.course.topics.TopicDTO;
 import com.ea.campus.ms.course.topics.TopicService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,17 +42,17 @@ public class CourseServiceTest {
 	@Test
 	public void topic_CRUD() {
 		// 1. Insert
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic = new TopicDTO("1", "Arrays", "Arrays in Java");
 		topicService.addTopic(topic);
 
 		// 2. Get
-		TopicEntity topicDB = topicService.getTopic(topic.getId());
+		TopicDTO topicDB = topicService.getTopic(topic.getId());
 		log.debug("topicDB: " + topicDB);
 		then(topicDB).isNotNull();
 		then(topicDB).isEqualTo(topic);
 
 		// 3. Get list
-		List<TopicEntity> list = topicService.getAllTopics();
+		List<TopicDTO> list = topicService.getAllTopics();
 		log.debug("topic list: " + list);
 		then(list).isNotNull();
 		then(list.size()).isEqualTo(1);
@@ -75,17 +75,17 @@ public class CourseServiceTest {
 	@Test
 	public void course_CRUD() {
 		// 1. Insert
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 full course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 full course");
 		courseService.addCourse(course);
 
 		// 2. Get
-		CourseEntity courseDB = courseService.getCourse(course.getId());
+		CourseDTO courseDB = courseService.getCourse(course.getId());
 		log.debug("courseDB: " + courseDB);
 		then(courseDB).isNotNull();
 		then(courseDB).isEqualTo(course);
 
 		// 3. Get list
-		List<CourseEntity> list = courseService.getAllCourses();
+		List<CourseDTO> list = courseService.getAllCourses();
 		log.debug("courses list: " + list);
 		then(list).isNotNull();
 		then(list.size()).isEqualTo(1);
@@ -108,53 +108,53 @@ public class CourseServiceTest {
 	@Test
 	public void insertParent_Course_thenChild_Topic() {
 		// 1. insert Course, db parent
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
 		// 2. insert Topic, db child
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic = new TopicDTO("1", "Arrays", "Arrays in Java");
 		topic.setCourse(course);
 		topicService.addTopic(topic);
 
 		// checks if topic is associated with Course
-		TopicEntity topicDB = topicService.getTopic(topic.getId());
+		TopicDTO topicDB = topicService.getTopic(topic.getId());
 		log.debug("topicDB: " + topicDB);
 		then(topicDB).isNotNull();
 		then(topicDB.getCourse()).isEqualTo(course);
 		then(topicDB).isEqualTo(topic);
 
 		// checks if topics list of the Course contains the inserted topic
-		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
+		List<TopicDTO> list = courseService.getAllTopicsForCourse(course.getId());
 		checkListEquality(list, Arrays.asList(topic));
 	}
 
 	@Test
 	public void insertParent_Course_thenNChilds_Topic() {
 		// 1. insert Course (db parent)
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
 		// 2. Insert 3 Topics for the course "1" (db child)
-		List<TopicEntity> topicsList = new ArrayList<>();
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
+		List<TopicDTO> topicsList = new ArrayList<>();
+		TopicDTO topic = new TopicDTO("1", "Arrays", "Arrays in Java");
 		topic.setCourse(course);
 		topicService.addTopic(topic);
 		topicsList.add(topic.clone());
-		topic = new TopicEntity("2", "Strings", "Strings in Java");
+		topic = new TopicDTO("2", "Strings", "Strings in Java");
 		topic.setCourse(course);
 		topicService.addTopic(topic);
 		topicsList.add(topic.clone());
-		topic = new TopicEntity("3", "Multithreading", "Multithreading in Java");
+		topic = new TopicDTO("3", "Multithreading", "Multithreading in Java");
 		topic.setCourse(course);
 		topicService.addTopic(topic);
 		topicsList.add(topic.clone());
 
 		// Checks if topics list of the Course contains the inserted topics
-		List<TopicEntity> list = courseService.getAllTopicsForCourse(course.getId());
+		List<TopicDTO> list = courseService.getAllTopicsForCourse(course.getId());
 		checkListEquality(list, topicsList);
 		
 		// Checks if all topics present in DB are the one we inserted. (each junit , db starts empty)
-		List<TopicEntity> topicsDB = topicService.getAllTopics();
+		List<TopicDTO> topicsDB = topicService.getAllTopics();
 		log.debug("topicsDB: " + topicsDB);
 		then(topicsDB).isNotNull();
 		checkListEquality(topicsDB, topicsList);
@@ -163,27 +163,27 @@ public class CourseServiceTest {
 	@Test
 	public void addTopicForCourse() {
 		// 1. Insert Course
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
 		// 2. Insert Topic
-		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic1 = new TopicDTO("1", "Arrays", "Arrays in Java");
 		courseService.addTopicForCourse(topic1, course.getId());
 
 		// 3. Checks, New topic is associated to same Course
-		TopicEntity topicDB = topicService.getTopic(topic1.getId());
+		TopicDTO topicDB = topicService.getTopic(topic1.getId());
 		log.debug("topicDB: " + topicDB);
 		then(topicDB).isNotNull();
 		then(topicDB.getCourse()).isEqualTo(course);
 		
 		// 4. List for course 1 should be 1
-		List<TopicEntity> topicList = courseService.getAllTopicsForCourse(course.getId());
+		List<TopicDTO> topicList = courseService.getAllTopicsForCourse(course.getId());
 		log.debug("topicList: " + topicList);
 		then(topicList).isNotNull();
 		then(topicList.size()).isEqualTo(1);
 		then(topicList).isEqualTo(Arrays.asList(topic1));
 		
-		TopicEntity topic2 = new TopicEntity("2", "Primitives", "Primitives in Java");
+		TopicDTO topic2 = new TopicDTO("2", "Primitives", "Primitives in Java");
 		courseService.addTopicForCourse(topic2, course.getId());
 		
 		topicList = courseService.getAllTopicsForCourse(course.getId());
@@ -196,11 +196,11 @@ public class CourseServiceTest {
 	@Test
 	public void insertChild_Topic_thenParent_Course_thenUpdateReference() {
 		// 1. add Topic, child db table (N records here)
-		TopicEntity topic = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic = new TopicDTO("1", "Arrays", "Arrays in Java");
 		topicService.addTopic(topic);
 
 		// 2. add Course, parent db table (1 records here)
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
 
 		// 3. update reference for parent record
@@ -208,7 +208,7 @@ public class CourseServiceTest {
 		topicService.updateTopic(topic);
 
 		// checks
-		TopicEntity topicDB = topicService.getTopic(topic.getId());
+		TopicDTO topicDB = topicService.getTopic(topic.getId());
 		then(topicDB).isNotNull();
 		then(topicDB.getCourse()).isEqualTo(course);
 		then(topicDB).isEqualTo(topic);
@@ -216,9 +216,9 @@ public class CourseServiceTest {
 	
 	@Test (expected=TopicAssociatedToCourseException.class)
 	public void ex_deleteAllCourse_whenTopicAssociated() {
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
-		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic1 = new TopicDTO("1", "Arrays", "Arrays in Java");
 		courseService.addTopicForCourse(topic1, course.getId());
 
 		courseService.deleteAll();		
@@ -226,9 +226,9 @@ public class CourseServiceTest {
 	
 	@Test (expected=TopicAssociatedToCourseException.class)
 	public void ex_deleteCourse_whenTopicAssociated() {
-		CourseEntity course = new CourseEntity("1", "Java 7", "Java 7 course");
+		CourseDTO course = new CourseDTO("1", "Java 7", "Java 7 course");
 		courseService.addCourse(course);
-		TopicEntity topic1 = new TopicEntity("1", "Arrays", "Arrays in Java");
+		TopicDTO topic1 = new TopicDTO("1", "Arrays", "Arrays in Java");
 		courseService.addTopicForCourse(topic1, course.getId());
 
 		courseService.deleteCourse(course.getId());		

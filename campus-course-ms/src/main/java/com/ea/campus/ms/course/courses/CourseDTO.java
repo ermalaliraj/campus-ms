@@ -1,40 +1,34 @@
 package com.ea.campus.ms.course.courses;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-@Entity
-@Table(name = "COURSE")
-public class CourseEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
-	@Id
-	@Column(name = "COURSE_ID")
+public class CourseDTO implements Serializable {
+
+	private static final long serialVersionUID = 1;
+
 	private String id;
-	@Column(name = "COURSE_NAME")
 	private String name;
-	@Column(name = "COURSE_DESC")
 	private String description;
-	@Column(name = "MAX_SUBSCRIPTIONS")
 	private int maxSubscriptions;
-	@Column(name = "AVAILABLE_SUBSCRIPTIONS")
 	private int stillAvailableSubscriptions;
 
-	public CourseEntity() {
-	}
-
-	public CourseEntity(String id, String name, String description) {
+	public CourseDTO(String id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+	}
+
+	public CourseDTO() {
+
 	}
 
 	public String getId() {
@@ -78,9 +72,9 @@ public class CourseEntity {
 	}
 
 	public boolean equals(final Object other) {
-		if (!(other instanceof CourseEntity))
+		if (!(other instanceof CourseDTO))
 			return false;
-		CourseEntity o = (CourseEntity) other;
+		CourseDTO o = (CourseDTO) other;
 
 		return new EqualsBuilder()
 				.append(id, o.id)

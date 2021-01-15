@@ -1,7 +1,5 @@
 server:
   port: ${PORT:8098}
-  
-  
 
 # give the application a name
 spring:
@@ -25,10 +23,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://user:password@localhost:8761/eureka/
-    
 
-    
-    
+
 stub:
     payment-ms: true
     
@@ -47,8 +43,11 @@ logging.level:
             core: warn
             boot: warn
             web: warn
+            cloud: warn
         hibernate: warn
         hibernate.SQL: warn
         apache: warn
         jboss.logging: warn
-    com.ea: debug
+    com:
+        netflix: warn
+        ea: debug

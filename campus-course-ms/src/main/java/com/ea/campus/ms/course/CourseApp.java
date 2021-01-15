@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages="com.ea")
-@EnableEurekaClient
-@EnableCircuitBreaker
+//@EnableEurekaClient  //removed Eureka por test purpose
+//@EnableCircuitBreaker //removed Eureka por test purpose
 public class CourseApp {
 
 	public static void main(String[] args) {

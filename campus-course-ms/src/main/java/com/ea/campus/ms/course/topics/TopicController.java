@@ -20,27 +20,27 @@ public class TopicController {
 	private TopicService topicService;
 
 	@RequestMapping("/topics")
-	public List<TopicEntity> getAllTopics() {
-		List<TopicEntity> topics = topicService.getAllTopics();
+	public List<TopicDTO> getAllTopics() {
+		List<TopicDTO> topics = topicService.getAllTopics();
 		log.info("Tot topics found in DB: " + topics.size());
 		return topics;
 	}
 
 	@RequestMapping("/topics/{id}")
-	public TopicEntity getTopic(@PathVariable String id) {
-		TopicEntity topic = topicService.getTopic(id);
+	public TopicDTO getTopic(@PathVariable String id) {
+		TopicDTO topic = topicService.getTopic(id);
 		log.info("Found in DB: " + topic);
 		return topic;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/topics")
-	public void addTopic(@RequestBody TopicEntity topic) {
+	public void addTopic(@RequestBody TopicDTO topic) {
 		topicService.addTopic(topic);
 		log.info("Saved in DB: " + topic);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/topics")
-	public void updateTopic(@RequestBody TopicEntity topic) {
+	public void updateTopic(@RequestBody TopicDTO topic) {
 		topicService.updateTopic(topic);
 		log.info("Updated in DB: " + topic);
 	}

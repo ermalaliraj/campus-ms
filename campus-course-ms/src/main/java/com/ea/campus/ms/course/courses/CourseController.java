@@ -3,6 +3,7 @@ package com.ea.campus.ms.course.courses;
 import java.util.Date;
 import java.util.List;
 
+import com.ea.campus.ms.course.topics.TopicDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ea.campus.ms.course.topics.TopicEntity;
 
 @RestController
 public class CourseController {
@@ -28,27 +27,27 @@ public class CourseController {
 	}
 
 	@RequestMapping("/courses")
-	public List<CourseEntity> getAllCourses() {
-		List<CourseEntity> courses = courseService.getAllCourses();
+	public List<CourseDTO> getAllCourses() {
+		List<CourseDTO> courses = courseService.getAllCourses();
 		log.info("Tot courses found in DB: " + courses.size());
 		return courses;
 	}
 
-	@RequestMapping("/courses/{id}")
-	public CourseEntity getCourse(@PathVariable String id) {
-		CourseEntity entity = courseService.getCourse(id);
-		log.info("Found in DB: " + entity);
-		return entity;
+	@RequestMapping(method = RequestMethod.GET, value = "/courses/{id}")
+	public CourseDTO getCourse(@PathVariable String id) {
+		CourseDTO course = courseService.getCourse(id);
+		log.info("Found in DB: " + course);
+		return course;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/courses")
-	public void addCourse(@RequestBody CourseEntity course) {
+	public void addCourse(@RequestBody CourseDTO course) {
 		courseService.addCourse(course);
 		log.info("Saved in DB: " + course);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/courses")
-	public void updateCourse(@RequestBody CourseEntity course) {
+	public void updateCourse(@RequestBody CourseDTO course) {
 		courseService.updateCourse(course);
 		log.info("Updated in DB: " + course);
 	}
@@ -66,14 +65,14 @@ public class CourseController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/courses/{courseId}/topics")
-	public List<TopicEntity> getAllTopicsForCourse(@PathVariable String courseId) {
-		List<TopicEntity> topics = courseService.getAllTopicsForCourse(courseId);
+	public List<TopicDTO> getAllTopicsForCourse(@PathVariable String courseId) {
+		List<TopicDTO> topics = courseService.getAllTopicsForCourse(courseId);
 		log.info("For course " + courseId + " found " + topics.size() + " topics");
 		return topics;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/topics")
-	public void addTopicForCourse(@RequestBody TopicEntity topic, @PathVariable String courseId) {
+	public void addTopicForCourse(@RequestBody TopicDTO topic, @PathVariable String courseId) {
 		courseService.addTopicForCourse(topic, courseId);
 		log.info("For course " + courseId + " added topic " + topic);
 	}

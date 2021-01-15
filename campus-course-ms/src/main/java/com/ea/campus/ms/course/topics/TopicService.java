@@ -12,23 +12,23 @@ public class TopicService {
 	@Autowired
 	private TopicRepository topicRepository;
 
-	public List<TopicEntity> getAllTopics() {
-		List<TopicEntity> topics = new ArrayList<>();
+	public List<TopicDTO> getAllTopics() {
+		List<TopicDTO> topics = new ArrayList<>();
 		topicRepository.findAll()
-			.forEach(topics::add);
+				.forEach(entity -> topics.add(TopicMapper.toDTO(entity)));
 		return topics;
 	}
 
-	public TopicEntity getTopic(String id) {
-		return topicRepository.findOne(id);
+	public TopicDTO getTopic(String id) {
+		return TopicMapper.toDTO(topicRepository.findOne(id));
 	}
 
-	public void addTopic(TopicEntity topic) {
-		topicRepository.save(topic);
+	public void addTopic(TopicDTO topic) {
+		topicRepository.save(TopicMapper.toEntity(topic));
 	}
 	
-	public void updateTopic(TopicEntity topic) {
-		topicRepository.save(topic);
+	public void updateTopic(TopicDTO topic) {
+		topicRepository.save(TopicMapper.toEntity(topic));
 	}
 
 	public void deleteTopic(String id) {
