@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ea.campus.ms.course.courses.CourseDTO;
-import com.ea.campus.ms.course.courses.CourseService;
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
+import com.ea.campus.ms.course.courses.service.CourseService;
 import com.ea.campus.ms.course.exception.TopicAssociatedToCourseException;
 import com.ea.campus.ms.course.topics.TopicDTO;
 import com.ea.campus.ms.course.topics.TopicService;

@@ -1,8 +1,10 @@
-package com.ea.campus.ms.course.courses;
+package com.ea.campus.ms.course.courses.controller;
 
 import java.util.Date;
 import java.util.List;
 
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
+import com.ea.campus.ms.course.courses.service.CourseService;
 import com.ea.campus.ms.course.topics.TopicDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

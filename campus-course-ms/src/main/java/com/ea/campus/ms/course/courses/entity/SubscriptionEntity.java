@@ -1,6 +1,4 @@
-package com.ea.campus.ms.course.courses;
-
-import java.io.Serializable;
+package com.ea.campus.ms.course.courses.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +15,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 @Entity
 @Table(name = "SUBSCRIPTION")
-public class SubscriptionEntity implements Serializable {
-
-	private static final long serialVersionUID = 5422364393006006992L;
+public class SubscriptionEntity {
 
 	@Id
 	@Column(name = "STUDENT_NAME")

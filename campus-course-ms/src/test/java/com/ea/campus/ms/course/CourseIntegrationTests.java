@@ -19,7 +19,7 @@ import org.springframework.http.*;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ea.campus.ms.course.courses.CourseDTO;
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
 import com.ea.campus.ms.course.topics.TopicDTO;
 
 @RunWith(SpringRunner.class)

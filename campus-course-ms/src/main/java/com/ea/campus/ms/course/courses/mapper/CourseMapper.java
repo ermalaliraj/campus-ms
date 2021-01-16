@@ -1,4 +1,7 @@
-package com.ea.campus.ms.course.courses;
+package com.ea.campus.ms.course.courses.mapper;
+
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
+import com.ea.campus.ms.course.courses.entity.CourseEntity;
 
 public class CourseMapper {
 

@@ -1,7 +1,6 @@
 package com.ea.campus.ms.course.topics;
 
-import com.ea.campus.ms.course.courses.CourseDTO;
-import com.ea.campus.ms.course.courses.CourseEntity;
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;

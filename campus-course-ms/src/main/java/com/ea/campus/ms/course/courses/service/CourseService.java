@@ -1,8 +1,11 @@
-package com.ea.campus.ms.course.courses;
+package com.ea.campus.ms.course.courses.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ea.campus.ms.course.courses.dto.CourseDTO;
+import com.ea.campus.ms.course.courses.repository.CourseRepository;
+import com.ea.campus.ms.course.courses.entity.CourseEntity;
 import com.ea.campus.ms.course.topics.TopicDTO;
 import com.ea.campus.ms.course.topics.TopicEntity;
 import com.ea.campus.ms.course.topics.TopicMapper;
@@ -15,8 +18,8 @@ import com.ea.campus.ms.course.exception.CourseNotFoundException;
 import com.ea.campus.ms.course.exception.TopicAssociatedToCourseException;
 import com.ea.campus.ms.course.topics.TopicRepository;
 
-import static com.ea.campus.ms.course.courses.CourseMapper.toDTO;
-import static com.ea.campus.ms.course.courses.CourseMapper.toEntity;
+import static com.ea.campus.ms.course.courses.mapper.CourseMapper.toDTO;
+import static com.ea.campus.ms.course.courses.mapper.CourseMapper.toEntity;
 
 @Service
 public class CourseService {

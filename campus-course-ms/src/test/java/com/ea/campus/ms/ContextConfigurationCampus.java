@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ea.campus.ms.course.courses.CourseRepository;
-import com.ea.campus.ms.course.courses.CourseService;
+import com.ea.campus.ms.course.courses.repository.CourseRepository;
+import com.ea.campus.ms.course.courses.service.CourseService;
 import com.ea.campus.ms.course.topics.TopicRepository;
 import com.ea.campus.ms.course.topics.TopicService;
 

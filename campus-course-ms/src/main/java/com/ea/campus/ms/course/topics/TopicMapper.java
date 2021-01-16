@@ -1,6 +1,6 @@
 package com.ea.campus.ms.course.topics;
 
-import com.ea.campus.ms.course.courses.CourseMapper;
+import com.ea.campus.ms.course.courses.mapper.CourseMapper;
 
 public class TopicMapper {
 

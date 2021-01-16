@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.ea.campus.ms.course.courses.CourseEntity;
+import com.ea.campus.ms.course.courses.entity.CourseEntity;
 
 @Entity
 @Table(name = "TOPIC")

@@ -1,6 +1,4 @@
-package com.ea.campus.ms.course.courses;
-
-import java.io.Serializable;
+package com.ea.campus.ms.course.courses.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
